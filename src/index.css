@@ -1,4 +1,5 @@
 @import url(./vendor/normalize.css);
+@import url(./fonts/fonts.css);
 @import url(./components/AboutMe/AboutMe.css);
 @import url(./components/AboutProject/AboutProject.css);
 @import url(./components/App/App.css);
