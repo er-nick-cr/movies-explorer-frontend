@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import Promo from '../Promo/Promo';
 // import NavTab from '../NavTab/NavTab';
-// import AboutProject from '../AboutProject/AboutProject';
-// import Techs from '../Techs/Techs';
-// import AboutMe from '../AboutMe/AboutMe';
-// import Portfolio from '../Portfolio/Portfolio';
+import AboutProject from '../AboutProject/AboutProject';
+import Techs from '../Techs/Techs';
+import AboutMe from '../AboutMe/AboutMe';
+import Portfolio from '../Portfolio/Portfolio';
 
 function Main() {
 	return (
 		<main>
 			<Promo />
-			{/* <NavTa	b />
+			{/* <NavTab /> */}
 			<AboutProject />
 			<Techs />
 			<AboutMe />
-			<Portfolio /> */}
+			<Portfolio />
 		</main>
 	);
 }

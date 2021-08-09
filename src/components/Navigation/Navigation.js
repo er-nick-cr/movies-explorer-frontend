@@ -1,15 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import LoggedInNavigation from '../LoggedInNavigation/LoggedInNavigation';
+import LoggedOutNavigation from '../LoggedOutNavigation/LoggedOutNavigation';
 
-function Navigation() {
+function Navigation({ isLoggedIn }) {
 	return (
 		<nav className="navigation">
-			<Link to="/signup" className="navigation__link">
-				Регистрация
-			</Link>
-			<Link to="/signup" className="navigation__link navigation__link_green">
-				Войти
-			</Link>
+			{isLoggedIn ? <LoggedInNavigation /> : <LoggedOutNavigation />}
 		</nav>
 	);
 }
