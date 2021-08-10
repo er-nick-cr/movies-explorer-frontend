@@ -1,7 +1,7 @@
 import React from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-function MoviesCardList({ movies }) {
+function MoviesCardList({ movies, location }) {
 	return (
 		<section className="card-list">
 			<div className="card-list__cards">
@@ -10,9 +10,11 @@ function MoviesCardList({ movies }) {
 					: ''}
 			</div>
 			<div className="card-list__else">
-				<button type="button" className="card-list__button">
-					Ещё
-				</button>
+				{location.pathname === '/movies' && (
+					<button type="button" className="card-list__button">
+						Ещё
+					</button>
+				)}
 			</div>
 		</section>
 	);

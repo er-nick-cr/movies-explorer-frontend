@@ -3,12 +3,15 @@ import SearchForm from '../SearchForm/SearchForm';
 import Preloader from '../Preloader/Preloader';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 
-function Movies({ movies }) {
+function Movies({ movies, location }) {
 	return (
 		<main className="movies">
 			<SearchForm />
-			<MoviesCardList movies={movies} />
-			{/* <Preloader /> */}
+			{movies ? (
+				<MoviesCardList movies={movies} location={location} />
+			) : (
+				<Preloader />
+			)}
 		</main>
 	);
 }

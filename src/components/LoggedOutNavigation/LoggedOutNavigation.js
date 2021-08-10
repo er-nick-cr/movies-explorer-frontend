@@ -3,14 +3,18 @@ import { Link } from 'react-router-dom';
 
 function LoggedOutNavigation() {
 	return (
-		<>
-			<Link to="/signup" className="navigation__link">
-				Регистрация
-			</Link>
-			<Link to="/signup" className="navigation__link navigation__link_green">
-				Войти
-			</Link>
-		</>
+		<ul className="navigation__nav">
+			<li className="navigation__item">
+				<Link to="/signup" className="navigation__link">
+					Регистрация
+				</Link>
+			</li>
+			<li className="navigation__item navigation__item_green">
+				<Link to="/signin" className="navigation__link navigation__link_green">
+					Войти
+				</Link>
+			</li>
+		</ul>
 	);
 }
 

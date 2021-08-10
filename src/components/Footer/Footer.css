@@ -5,6 +5,10 @@
 	box-sizing: border-box;
 }
 
+.footer_inactive {
+	display: none;
+}
+
 .footer__heading {
 	font-style: normal;
 	font-weight: normal;

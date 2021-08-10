@@ -1,8 +1,12 @@
 import React from 'react';
 
-function Footer() {
+function Footer({ location }) {
 	return (
-		<footer className="footer">
+		<footer
+			className={`footer ${
+				location.pathname === '/profile' ? 'footer_inactive' : ''
+			}`}
+		>
 			<div className="footer__heading">
 				Учебный проект Яндекс.Практикум х BeatFilm.
 			</div>

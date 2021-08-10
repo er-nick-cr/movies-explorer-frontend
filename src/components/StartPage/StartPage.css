@@ -1,0 +1,123 @@
+.start-page {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.start-page__main {
+	width: 396px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+}
+
+.start-page__logo {
+	margin: 70px 0 0 0;
+}
+
+.start-page__heading {
+	font-style: normal;
+	font-weight: 500;
+	font-size: 24px;
+	line-height: 29px;
+	color: #ffffff;
+	margin: 40px 0 0 0;
+}
+
+.start-page__form {
+	width: 100%;
+	margin: 40px 0 0 0;
+}
+
+.start-page__form-container {
+	border: none;
+	height: 266px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+	padding: 0;
+	margin: 0;
+}
+
+.start-page__button {
+	width: 100%;
+	border: none;
+	padding: 0;
+	background: #4285f4;
+	border-radius: 3px;
+	height: 45px;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 17px;
+	text-align: center;
+	color: #ffffff;
+}
+
+.start-page__input-container {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	margin-top: 24px;
+	border-bottom: 1px solid #424242;
+}
+
+.start-page__input-container:first-child {
+	margin-top: 0;
+}
+
+.input__label {
+	font-style: normal;
+	font-weight: normal;
+	font-size: 10px;
+	line-height: 12px;
+	color: #8b8b8b;
+	margin-bottom: 5px;
+}
+
+.start-page__input {
+	background: transparent;
+	border: none;
+	padding: 0;
+	margin-bottom: 10px;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 17px;
+	color: #ffffff;
+}
+
+.start-page__input:focus {
+	outline: none;
+	background: transparent;
+}
+
+.start-page__change-page {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 16px;
+}
+
+.start-page__question {
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 17px;
+	color: #8b8b8b;
+}
+
+.start-page__link {
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 17px;
+	color: #4285f4;
+	text-decoration: none;
+	margin-left: 6px;
+}
