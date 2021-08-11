@@ -61,3 +61,40 @@
 	line-height: 16px;
 	color: #ffffff;
 }
+
+@media screen and (max-width: 1100px) {
+	.promo {
+		padding: 0 30px 0 30px;
+		grid-template-areas:
+			'logo'
+			'header';
+		height: 924px;
+	}
+
+	.promo__logo {
+		justify-self: center;
+		margin: 234px 0 0 0;
+	}
+
+	.promo__header {
+		justify-self: center;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.promo__heading {
+		text-align: center;
+		margin: 0 0 0 0;
+		font-size: 40px;
+		line-height: 50px;
+	}
+
+	.promo__paragraph {
+		text-align: center;
+	}
+
+	.promo__button {
+		align-self: center;
+		justify-self: center;
+	}
+}

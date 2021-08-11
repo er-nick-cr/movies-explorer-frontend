@@ -59,3 +59,14 @@
 .card__button__active {
 	background: #2be080;
 }
+
+@media screen and (max-width: 990px) {
+	.card {
+		width: 339px;
+		height: 257px;
+	}
+	.card__pic {
+		width: 339px;
+		height: 190px;
+	}
+}

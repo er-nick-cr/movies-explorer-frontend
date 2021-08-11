@@ -6,10 +6,27 @@ import Movies from '../Movies/Movies';
 import Footer from '../Footer/Footer';
 import Profile from '../Profile/Profile';
 
-function Content({ scroll, isLoggedIn, movies, savedMovies, location, user }) {
+function Content({
+	scroll,
+	isLoggedIn,
+	movies,
+	savedMovies,
+	location,
+	user,
+	isMenuOpen,
+	handleOpenMenu,
+	handleCloseMenu,
+}) {
 	return (
 		<>
-			<Header scroll={scroll} isLoggedIn={isLoggedIn} />
+			<Header
+				scroll={scroll}
+				isLoggedIn={isLoggedIn}
+				isMenuOpen={isMenuOpen}
+				handleOpenMenu={handleOpenMenu}
+				handleCloseMenu={handleCloseMenu}
+				location={location}
+			/>
 			<Switch>
 				<Route path="/movies">
 					<Movies movies={movies} location={location} />

@@ -12,6 +12,8 @@ import user from '../../utils/user';
 function App() {
 	const [scroll, setScroll] = useState(0);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
+
 	const location = useLocation();
 
 	const history = useHistory();
@@ -20,7 +22,13 @@ function App() {
 		history.goBack();
 	}
 
-	console.log(history);
+	function handleOpenMenu() {
+		setIsMenuOpen(true);
+	}
+
+	function handleCloseMenu() {
+		setIsMenuOpen(false);
+	}
 
 	useEffect(() => {
 		setIsLoggedIn(true);
@@ -59,6 +67,9 @@ function App() {
 				</Route>
 				<Route path={['/', '/saved-movies', '/movies', '/profile']} exact>
 					<Content
+						isMenuOpen={isMenuOpen}
+						handleOpenMenu={handleOpenMenu}
+						handleCloseMenu={handleCloseMenu}
 						scroll={scroll}
 						isLoggedIn={isLoggedIn}
 						movies={movies}
