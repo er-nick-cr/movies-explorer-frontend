@@ -16,6 +16,7 @@ function Content({
 	isMenuOpen,
 	handleOpenMenu,
 	handleCloseMenu,
+	useInput,
 }) {
 	return (
 		<>
@@ -35,7 +36,7 @@ function Content({
 					<Movies movies={savedMovies} location={location} />
 				</Route>
 				<Route path="/profile">
-					<Profile user={user} />
+					<Profile user={user} useInput={useInput} />
 				</Route>
 				<Route path="/">
 					<Main />

@@ -63,7 +63,7 @@
 	display: flex;
 	flex-direction: column;
 	margin-top: 24px;
-	border-bottom: 1px solid #424242;
+	position: relative;
 }
 
 .start-page__input-container:first-child {
@@ -82,18 +82,26 @@
 .start-page__input {
 	background: transparent;
 	border: none;
-	padding: 0;
+	padding: 0 0 10px 0;
 	margin-bottom: 10px;
 	font-style: normal;
 	font-weight: normal;
 	font-size: 14px;
 	line-height: 17px;
 	color: #ffffff;
+	border-bottom: 1px solid #424242;
+	box-sizing: border-box;
 }
 
 .start-page__input:focus {
 	outline: none;
 	background: transparent;
+	border-bottom: 1px solid #4285f4;
+}
+
+.start-page__input_error {
+	border-bottom: 1px solid #ee3465;
+	color: #ee3465;
 }
 
 .start-page__change-page {
@@ -120,4 +128,21 @@
 	color: #4285f4;
 	text-decoration: none;
 	margin-left: 6px;
+}
+
+.start-page__input-error {
+	width: 100%;
+	color: #ee3465;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 10px;
+	line-height: 12px;
+	position: absolute;
+	left: 0;
+	top: 51px;
+	display: none;
+}
+
+.start-page__input-error_active {
+	display: block;
 }

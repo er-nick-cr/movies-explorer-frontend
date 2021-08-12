@@ -27,7 +27,11 @@ function Footer({ location }) {
 					>
 						Github
 					</a>
-					<a className="footer__link" href="#" target="_blank">
+					<a
+						className="footer__link"
+						href="https://ru-ru.facebook.com/"
+						target="_blank"
+					>
 						Facebook
 					</a>
 				</div>

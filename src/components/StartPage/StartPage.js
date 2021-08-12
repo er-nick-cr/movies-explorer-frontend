@@ -9,6 +9,7 @@ function StartPage({
 	question,
 	link,
 	linkText,
+	useInput,
 }) {
 	return (
 		<section className="start-page">
@@ -19,7 +20,7 @@ function StartPage({
 				<h3 className="start-page__heading">{heading}</h3>
 				<form className="start-page__form">
 					<fieldset className="start-page__form-container">
-						<Component />
+						<Component useInput={useInput} />
 					</fieldset>
 					<button type="submit" className="start-page__button">
 						{buttonText}

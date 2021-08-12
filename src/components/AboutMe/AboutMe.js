@@ -17,7 +17,11 @@ function AboutMe() {
 						постоянной работы (нет :().
 					</p>
 					<div className="about-me__social">
-						<a className="about-me__link" href="#" target="_blank">
+						<a
+							className="about-me__link"
+							href="https://ru-ru.facebook.com/"
+							target="_blank"
+						>
 							Facebook
 						</a>
 						<a
