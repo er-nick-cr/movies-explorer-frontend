@@ -14,7 +14,7 @@ function Header({
 	return (
 		<header className={`header ${scroll > 0 ? `header__scrolled` : ``}`}>
 			<Link to="/">
-				<img className="header__logo" src={logo} alt="logo" />
+				<img className="header__logo cursor overlay" src={logo} alt="logo" />
 			</Link>
 			<Navigation
 				isLoggedIn={isLoggedIn}

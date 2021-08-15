@@ -11,7 +11,10 @@ function SearchForm() {
 						placeholder="Фильм"
 					/>
 				</fieldset>
-				<button type="submit" className="search-form__button"></button>
+				<button
+					type="submit"
+					className="search-form__button overlay cursor"
+				></button>
 			</form>
 			<fieldset className="search-form__checkbox-container">
 				<input type="checkbox" className="search-form__checkbox" />

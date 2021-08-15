@@ -58,6 +58,10 @@
 	color: #ffffff;
 }
 
+.start-page__button_disabled {
+	opacity: 0.5;
+}
+
 .start-page__input-container {
 	width: 100%;
 	display: flex;
@@ -145,4 +149,23 @@
 
 .start-page__input-error_active {
 	display: block;
+}
+
+@media screen and (max-width: 464px) {
+	.start-page__main {
+		width: 260px;
+	}
+
+	.start-page__heading {
+		align-self: center;
+	}
+
+	.start-page__link {
+		align-self: center;
+	}
+
+	.start-page__question {
+		font-size: 12px;
+		line-height: 15px;
+	}
 }

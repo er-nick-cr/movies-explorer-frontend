@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-function Login({ useInput }) {
+function Login({ useInput, handleValidForm, handleInvalidForm }) {
 	const emailValue = useInput('', { isEmpty: true, isEmail: false });
 	const passwordValue = useInput('', { isEmpty: true });
+
+	useEffect(() => {
+		emailValue.isValid && passwordValue.isValid
+			? handleValidForm()
+			: handleInvalidForm();
+	}, [
+		emailValue.isValid,
+		passwordValue.isValid,
+		handleValidForm,
+		handleInvalidForm,
+	]);
 
 	return (
 		<>

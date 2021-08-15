@@ -13,7 +13,7 @@ function MoviesCard({ movie }) {
 					<h2 className="card__name">{movie.nameRU}</h2>
 					<p className="card__duration">{movie.duration}</p>
 				</div>
-				<button type="button" className="card__button"></button>
+				<button type="button" className="card__button overlay cursor"></button>
 			</div>
 		</article>
 	);

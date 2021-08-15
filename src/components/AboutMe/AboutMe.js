@@ -21,6 +21,7 @@ function AboutMe() {
 							className="about-me__link"
 							href="https://ru-ru.facebook.com/"
 							target="_blank"
+							rel="noreferrer"
 						>
 							Facebook
 						</a>
@@ -28,12 +29,13 @@ function AboutMe() {
 							className="about-me__link"
 							href="https://github.com/er-nick-cr"
 							target="_blank"
+							rel="noreferrer"
 						>
 							Github
 						</a>
 					</div>
 				</div>
-				<img className="about-me__photo" src={photo} />
+				<img className="about-me__photo" src={photo} alt="Моё фото" />
 			</div>
 		</section>
 	);

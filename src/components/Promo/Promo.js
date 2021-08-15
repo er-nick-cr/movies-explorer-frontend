@@ -12,7 +12,7 @@ function Promo() {
 				</p>
 			</div>
 			<div className="promo__logo"></div>
-			<button type="button" className="promo__button">
+			<button type="button" className="promo__button cursor overlay">
 				Узнать больше
 			</button>
 		</section>

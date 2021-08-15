@@ -25,6 +25,7 @@ function App() {
 		const [maxLengthError, setMaxLengthError] = useState(false);
 		const [errorMessage, setErrorMessage] = useState('');
 		const [isEmailError, setIsEmailError] = useState(false);
+		const [isValid, setIsValid] = useState(true);
 
 		useEffect(() => {
 			for (const validation in validations) {
@@ -47,9 +48,15 @@ function App() {
 							? setIsEmailError(false)
 							: setIsEmailError(true);
 						break;
+					default:
+						break;
 				}
 
-				minLengthError
+				isEmpty || minLengthError || maxLengthError || isEmailError
+					? setIsValid(false)
+					: setIsValid(true);
+
+				minLengthError && value
 					? setErrorMessage('Колличество символов не может быть меньше 2')
 					: maxLengthError && value
 					? setErrorMessage('Колличество символов не может быть больше 30')
@@ -59,7 +66,15 @@ function App() {
 					? setErrorMessage('Введите email')
 					: setErrorMessage('');
 			}
-		}, [value]);
+		}, [
+			value,
+			isEmailError,
+			maxLengthError,
+			minLengthError,
+			validations,
+			isEmpty,
+			isValid,
+		]);
 
 		return {
 			isEmpty,
@@ -67,6 +82,7 @@ function App() {
 			maxLengthError,
 			errorMessage,
 			isEmailError,
+			isValid,
 		};
 	};
 

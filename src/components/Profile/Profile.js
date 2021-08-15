@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-function Profile({ user, useInput }) {
+function Profile({ useInput }) {
 	const nameValue = useInput('Никита', {
 		isEmpty: true,
 		minLength: 2,
@@ -76,11 +76,19 @@ function Profile({ user, useInput }) {
 						</span>
 					</div>
 				</fieldset>
-				<button type="submit" className="profile__submit-button">
+				<button
+					type="submit"
+					className={`profile__submit-button overlay cursor ${
+						nameValue.isValid && emailValue.isValid
+							? ''
+							: 'profile__submit-button_disabled'
+					}`}
+					disabled={!(nameValue.isValid && emailValue.isValid)}
+				>
 					Редактировать
 				</button>
 			</form>
-			<button type="button" className="profile__logout-button">
+			<button type="button" className="profile__logout-button overlay cursor">
 				Выйти из аккаунта
 			</button>
 		</section>

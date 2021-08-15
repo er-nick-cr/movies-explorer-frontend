@@ -120,3 +120,24 @@
 		margin-left: 16px;
 	}
 }
+
+@media screen and (max-width: 690px) {
+	.search-form__text-input {
+		font-size: 18px;
+		line-height: 22px;
+	}
+
+	.search-form__container {
+		padding: 0 0 9px 0;
+	}
+
+	.search-form__checkbox-container {
+		justify-content: center;
+		align-items: center;
+		flex-direction: row-reverse;
+	}
+
+	.search-form__checkbox-container {
+		padding: 32px 0 47px 0;
+	}
+}

@@ -17,21 +17,25 @@ function LoggedInNavigation({
 			>
 				<ul className="navigation__nav navigation__nav_small">
 					<li
-						className={`navigation__item navigation__item_small navigation__item_hidden ${
+						className={`navigation__item navigation__item_small navigation__item_hidden overlay ${
 							location.pathname === '/' ? 'navigation__item_active' : ''
 						}`}
 					>
-						<Link className="navigation__link" to="/" onClick={handleCloseMenu}>
+						<Link
+							className="navigation__link navigation__link_mobile"
+							to="/"
+							onClick={handleCloseMenu}
+						>
 							Главная
 						</Link>
 					</li>
 					<li
-						className={`navigation__item navigation__item_small  ${
+						className={`navigation__item navigation__item_small overlay ${
 							location.pathname === '/movies' ? 'navigation__item_active' : ''
 						}`}
 					>
 						<Link
-							className="navigation__link"
+							className="navigation__link navigation__link_mobile"
 							to="/movies"
 							onClick={handleCloseMenu}
 						>
@@ -39,21 +43,21 @@ function LoggedInNavigation({
 						</Link>
 					</li>
 					<li
-						className={`navigation__item navigation__item_small  ${
+						className={`navigation__item navigation__item_small overlay ${
 							location.pathname === '/saved-movies'
 								? 'navigation__item_active'
 								: ''
 						}`}
 					>
 						<Link
-							className="navigation__link"
+							className="navigation__link navigation__link_mobile"
 							to="/saved-movies"
 							onClick={handleCloseMenu}
 						>
 							Сохраненные фильмы
 						</Link>
 					</li>
-					<li className="navigation__item navigation__item_small">
+					<li className="navigation__item navigation__item_small overlay">
 						<Link
 							to="/profile"
 							className={`navigation__link navigation__link_account ${

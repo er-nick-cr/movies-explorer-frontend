@@ -14,23 +14,26 @@ function Footer({ location }) {
 				<div className="footer__copyright">© 2021</div>
 				<div className="footer__social">
 					<a
-						className="footer__link"
+						className="footer__link overlay cursor"
 						href="https://praktikum.yandex.ru/"
 						target="_blank"
+						rel="noreferrer"
 					>
 						Яндекс.Практикум
 					</a>
 					<a
-						className="footer__link"
+						className="footer__link overlay cursor"
 						href="https://github.com/er-nick-cr/"
 						target="_blank"
+						rel="noreferrer"
 					>
 						Github
 					</a>
 					<a
-						className="footer__link"
+						className="footer__link overlay cursor"
 						href="https://ru-ru.facebook.com/"
 						target="_blank"
+						rel="noreferrer"
 					>
 						Facebook
 					</a>

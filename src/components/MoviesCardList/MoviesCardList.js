@@ -11,7 +11,7 @@ function MoviesCardList({ movies, location }) {
 			</div>
 			<div className="card-list__else">
 				{location.pathname === '/movies' && (
-					<button type="button" className="card-list__button">
+					<button type="button" className="card-list__button overlay cursor">
 						Ещё
 					</button>
 				)}

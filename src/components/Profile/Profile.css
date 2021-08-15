@@ -98,6 +98,10 @@
 	margin-top: 204px;
 }
 
+.profile__submit-button_disabled {
+	opacity: 0.5;
+}
+
 .profile__logout-button {
 	background: transparent;
 	border: none;
@@ -108,4 +112,13 @@
 	color: #ee3465;
 	padding: 0;
 	margin-top: 16px;
+}
+
+@media screen and (max-width: 464px) {
+	.profile__fieldset {
+		width: 260px;
+		border: none;
+		margin: 123px 0 0 0;
+		padding: 0;
+	}
 }

@@ -43,3 +43,19 @@
 		padding: 0 30px 0 30px;
 	}
 }
+
+@media screen and (max-width: 710px) {
+	.portfolio {
+		padding: 0 14px 0 14px;
+	}
+
+	.portfolio__main {
+		padding: 0 0 70px 0;
+	}
+
+	.portfolio__example {
+		font-size: 18px;
+		line-height: 28px;
+		letter-spacing: -0.04em;
+	}
+}

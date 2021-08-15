@@ -88,7 +88,7 @@
 		width: 100vw;
 		height: 100vh;
 		background-color: rgba(0, 0, 0, 0.5);
-		display: none;
+		visibility: hidden;
 	}
 
 	.navigation__burger {
@@ -101,7 +101,7 @@
 	}
 
 	.navigation__container_active {
-		display: block;
+		visibility: visible;
 	}
 
 	.navigation__nav_small {
@@ -162,5 +162,32 @@
 
 	.navigation__item:first-child {
 		margin-right: 0;
+	}
+}
+
+@media screen and (max-width: 690px) {
+	.navigation__link {
+		font-size: 10px;
+		line-height: 26px;
+	}
+
+	.navigation__link_mobile {
+		font-weight: 500;
+		font-size: 18px;
+		line-height: 22px;
+	}
+
+	.navigation__link_account {
+		font-size: 14px;
+		line-height: 16px;
+	}
+
+	.navigation__item_green {
+		width: 54px;
+		height: 26px;
+	}
+
+	.navigation__nav_small {
+		width: 100vw;
 	}
 }

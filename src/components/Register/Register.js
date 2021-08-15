@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 
-function Register({ useInput }) {
+function Register({ useInput, handleValidForm, handleInvalidForm }) {
 	const nameValue = useInput('', {
 		isEmpty: true,
 		minLength: 2,
@@ -9,7 +9,17 @@ function Register({ useInput }) {
 	const emailValue = useInput('', { isEmpty: true, isEmail: false });
 	const passwordValue = useInput('', { isEmpty: true });
 
-	console.log(emailValue);
+	useEffect(() => {
+		emailValue.isValid && nameValue.isValid && passwordValue.isValid
+			? handleValidForm()
+			: handleInvalidForm();
+	}, [
+		emailValue.isValid,
+		nameValue.isValid,
+		passwordValue.isValid,
+		handleValidForm,
+		handleInvalidForm,
+	]);
 
 	return (
 		<>
