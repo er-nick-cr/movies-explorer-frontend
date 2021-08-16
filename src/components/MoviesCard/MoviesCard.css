@@ -50,7 +50,7 @@
 	width: 16px;
 	height: 16px;
 	border-radius: 8px;
-	border: 1px solid #fff;
+	border: 2px solid #fff;
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
@@ -58,6 +58,16 @@
 
 .card__button__active {
 	background: #2be080;
+}
+
+.card__button_saved {
+	border: none;
+	background-image: url('../../images/card-close-button.svg');
+	background-size: 8px;
+	background-position-x: center;
+	background-position-y: center;
+	background-repeat: no-repeat;
+	border-radius: 0;
 }
 
 @media screen and (max-width: 990px) {

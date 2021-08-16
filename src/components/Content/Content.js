@@ -30,10 +30,14 @@ function Content({
 			/>
 			<Switch>
 				<Route path="/movies">
-					<Movies movies={movies} location={location} />
+					<Movies movies={movies} location={location} savedClass="" />
 				</Route>
 				<Route path="/saved-movies">
-					<Movies movies={savedMovies} location={location} />
+					<Movies
+						movies={savedMovies}
+						location={location}
+						savedClass="card__button_saved"
+					/>
 				</Route>
 				<Route path="/profile">
 					<Profile user={user} useInput={useInput} />

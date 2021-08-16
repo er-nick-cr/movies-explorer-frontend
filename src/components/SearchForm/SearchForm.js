@@ -1,14 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 function SearchForm() {
+	const [isFocused, setIsFocused] = useState(false);
+
+	function handleEnableFocus() {
+		setIsFocused(true);
+	}
+
+	function handleDisableFocus() {
+		setIsFocused(false);
+	}
+
 	return (
 		<section className="search-form">
-			<form className="search-form__container">
+			<form
+				className={`search-form__container ${
+					isFocused ? 'search-form__container_focus' : ''
+				}`}
+			>
 				<fieldset className="search-form__field">
 					<input
 						type="text"
 						className="search-form__text-input"
 						placeholder="Фильм"
+						required
+						onFocus={handleEnableFocus}
+						onBlur={handleDisableFocus}
 					/>
 				</fieldset>
 				<button
