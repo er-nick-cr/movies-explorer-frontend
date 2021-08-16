@@ -1,0 +1,93 @@
+.card {
+	width: 270px;
+	height: 218px;
+	border-radius: 10px;
+	box-shadow: 0px 16px 24px rgba(0, 0, 0, 0.05);
+	background: #222222;
+	overflow: hidden;
+}
+
+.card__pic {
+	width: 270px;
+	height: 151px;
+}
+
+.card__footer {
+	display: flex;
+	justify-content: space-between;
+	padding: 14px 12px 14px 12px;
+	box-sizing: border-box;
+}
+
+.card__description {
+	display: flex;
+	flex-direction: column;
+}
+
+.card__name {
+	font-style: normal;
+	font-weight: 500;
+	font-size: 13px;
+	line-height: 16px;
+	color: #ffffff;
+	margin: 0;
+}
+
+.card__duration {
+	font-style: normal;
+	font-weight: normal;
+	font-size: 11px;
+	line-height: 13px;
+	display: flex;
+	align-items: center;
+	color: #8b8b8b;
+	margin: 10px 0 0 0;
+}
+
+.card__button {
+	outline: none;
+	background: transparent;
+	width: 16px;
+	height: 16px;
+	border-radius: 8px;
+	border: 2px solid #fff;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.card__button__active {
+	background: #2be080;
+}
+
+.card__button_saved {
+	border: none;
+	background-image: url('../../images/card-close-button.svg');
+	background-size: 8px;
+	background-position-x: center;
+	background-position-y: center;
+	background-repeat: no-repeat;
+	border-radius: 0;
+}
+
+@media screen and (max-width: 990px) {
+	.card {
+		width: 339px;
+		height: 257px;
+	}
+	.card__pic {
+		width: 339px;
+		height: 190px;
+	}
+}
+
+@media screen and (max-width: 690px) {
+	.card {
+		width: 300px;
+		height: 235px;
+	}
+	.card__pic {
+		width: 300px;
+		height: 168px;
+	}
+}

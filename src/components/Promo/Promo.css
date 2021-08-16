@@ -1,0 +1,127 @@
+.promo {
+	max-width: 1280px;
+	height: 648px;
+	background-color: #073042;
+	margin: 0 auto;
+	padding: 0 70px 0 70px;
+	display: grid;
+	grid-template-areas: 'header header logo';
+	box-sizing: border-box;
+}
+
+.promo__header {
+	display: flex;
+	flex-direction: column;
+	grid-area: header;
+}
+
+.promo__heading {
+	width: 640px;
+	color: #ffffff;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 50px;
+	line-height: 58px;
+	margin: 0;
+	margin: 150px 0 0 0;
+}
+
+.promo__paragraph {
+	width: 310px;
+	color: #ffffff;
+	opacity: 0.5;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 13px;
+	line-height: 16px;
+	margin: 36px 0 0 0;
+}
+
+.promo__logo {
+	background-image: url(../../images/promo-logo.png);
+	width: 310px;
+	height: 304px;
+	grid-area: logo;
+	margin: 150px 0 0 0;
+	justify-self: end;
+}
+
+.promo__button {
+	background: transparent;
+	opacity: 0.6;
+	border: 1px solid #ffffff;
+	box-sizing: border-box;
+	border-radius: 3px;
+	width: 129px;
+	height: 36px;
+	padding: 0;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 12px;
+	line-height: 16px;
+	color: #ffffff;
+}
+
+@media screen and (max-width: 1100px) {
+	.promo {
+		padding: 0 30px 0 30px;
+		grid-template-areas:
+			'logo'
+			'header';
+		height: 924px;
+	}
+
+	.promo__logo {
+		justify-self: center;
+		margin: 234px 0 0 0;
+	}
+
+	.promo__header {
+		justify-self: center;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.promo__heading {
+		text-align: center;
+		margin: 0 0 0 0;
+		font-size: 40px;
+		line-height: 50px;
+	}
+
+	.promo__paragraph {
+		text-align: center;
+	}
+
+	.promo__button {
+		align-self: center;
+		justify-self: center;
+	}
+}
+
+@media screen and (max-width: 690px) {
+	.promo {
+		padding: 0 18px 0 18px;
+	}
+
+	.promo {
+		height: 710px;
+	}
+
+	.promo__logo {
+		width: 210px;
+		height: 206px;
+		background-size: contain;
+		margin: 144px 0 0 0;
+	}
+
+	.promo__heading {
+		font-size: 30px;
+		line-height: 38px;
+		letter-spacing: -0.04em;
+		width: 100%;
+	}
+	.promo__paragraph {
+		width: 100%;
+	}
+}
