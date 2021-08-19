@@ -17,6 +17,7 @@ function Content({
 	handleOpenMenu,
 	handleCloseMenu,
 	useInput,
+	setSearchValue,
 }) {
 	return (
 		<>
@@ -30,13 +31,21 @@ function Content({
 			/>
 			<Switch>
 				<Route path="/movies">
-					<Movies movies={movies} location={location} savedClass="" />
+					<Movies
+						movies={movies}
+						location={location}
+						savedClass=""
+						useInput={useInput}
+						setSearchValue={setSearchValue}
+					/>
 				</Route>
 				<Route path="/saved-movies">
 					<Movies
 						movies={savedMovies}
 						location={location}
 						savedClass="card__button_saved"
+						useInput={useInput}
+						setSearchValue={setSearchValue}
 					/>
 				</Route>
 				<Route path="/profile">

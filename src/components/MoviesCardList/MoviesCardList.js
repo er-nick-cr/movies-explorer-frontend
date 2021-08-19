@@ -8,7 +8,7 @@ function MoviesCardList({ movies, location, savedClass }) {
 				{movies.length > 0
 					? movies.map((movie) => (
 							<MoviesCard
-								key={movie._id}
+								key={movie.id}
 								movie={movie}
 								savedClass={savedClass}
 							/>

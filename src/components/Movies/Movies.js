@@ -3,10 +3,10 @@ import SearchForm from '../SearchForm/SearchForm';
 import Preloader from '../Preloader/Preloader';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 
-function Movies({ movies, location, savedClass }) {
+function Movies({ movies, location, savedClass, useInput, setSearchValue }) {
 	return (
 		<main className="movies">
-			<SearchForm />
+			<SearchForm useInput={useInput} setSearchValue={setSearchValue} />
 			{movies ? (
 				<MoviesCardList
 					movies={movies}

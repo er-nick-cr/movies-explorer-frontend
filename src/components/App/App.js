@@ -6,20 +6,43 @@ import StartPage from '../StartPage/StartPage';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
 import NotFound from '../NotFound/NotFound';
-import movies from '../../utils/movies';
 import savedMovies from '../../utils/savedMovies';
 import user from '../../utils/user';
+import moviesApi from '../../utils/MoviesApi';
 
 function App() {
 	const [scroll, setScroll] = useState(0);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [movies, setMovies] = useState([]);
+	const [searchedMovies, setSearchedMovies] = useState([]);
+	const [searchValue, setSearchValue] = useState('');
+
+	useEffect(() => {
+		moviesApi.getMovies().then((movies) => {
+			setMovies(movies);
+			console.log(movies);
+		});
+	}, []);
+
+	useEffect(() => {
+		const result = movies.filter(
+			(movie) =>
+				(movie.country ||
+					movie.description ||
+					movie.director ||
+					movie.nameEN ||
+					movie.nameRU) === searchValue.toString()
+		);
+
+		setSearchedMovies(result);
+	}, [searchValue, movies]);
 
 	const location = useLocation();
 
 	const history = useHistory();
 
-	const useValidation = (value, validations, validateEmail) => {
+	const useValidation = (value, validations) => {
 		const [isEmpty, setIsEmpty] = useState(true);
 		const [minLengthError, setMinLengthError] = useState(false);
 		const [maxLengthError, setMaxLengthError] = useState(false);
@@ -164,11 +187,12 @@ function App() {
 						handleCloseMenu={handleCloseMenu}
 						scroll={scroll}
 						isLoggedIn={isLoggedIn}
-						movies={movies}
+						movies={searchedMovies}
 						savedMovies={savedMovies}
 						location={location}
 						user={user}
 						useInput={useInput}
+						setSearchValue={setSearchValue}
 					/>
 				</Route>
 				<Route path="/*">
