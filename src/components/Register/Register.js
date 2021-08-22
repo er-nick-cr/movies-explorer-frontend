@@ -1,22 +1,23 @@
 import React, { useEffect } from 'react';
 
-function Register({ useInput, handleValidForm, handleInvalidForm }) {
-	const nameValue = useInput('', {
-		isEmpty: true,
-		minLength: 2,
-		maxLength: 30,
-	});
-	const emailValue = useInput('', { isEmpty: true, isEmail: false });
-	const passwordValue = useInput('', { isEmpty: true });
-
+function Register({
+	useInput,
+	handleValidForm,
+	handleInvalidForm,
+	nameValueRegister,
+	emailValueRegister,
+	passwordValueRegister,
+}) {
 	useEffect(() => {
-		emailValue.isValid && nameValue.isValid && passwordValue.isValid
+		emailValueRegister.isValid &&
+		nameValueRegister.isValid &&
+		passwordValueRegister.isValid
 			? handleValidForm()
 			: handleInvalidForm();
 	}, [
-		emailValue.isValid,
-		nameValue.isValid,
-		passwordValue.isValid,
+		emailValueRegister.isValid,
+		nameValueRegister.isValid,
+		passwordValueRegister.isValid,
 		handleValidForm,
 		handleInvalidForm,
 	]);
@@ -28,30 +29,31 @@ function Register({ useInput, handleValidForm, handleInvalidForm }) {
 				<input
 					name="name"
 					type="text"
+					required
 					className={`start-page__input ${
-						(nameValue.isEmpty ||
-							nameValue.minLengthError ||
-							nameValue.maxLengthError) &&
-						nameValue.isDirty
+						(nameValueRegister.isEmpty ||
+							nameValueRegister.minLengthError ||
+							nameValueRegister.maxLengthError) &&
+						nameValueRegister.isDirty
 							? 'start-page__input_error'
 							: ''
 					}`}
 					placeholder="Введите имя"
-					value={nameValue.value}
-					onChange={(e) => nameValue.onChange(e)}
-					onBlur={(e) => nameValue.onBlur(e)}
+					value={nameValueRegister.value}
+					onChange={(e) => nameValueRegister.onChange(e)}
+					onBlur={(e) => nameValueRegister.onBlur(e)}
 				/>
 				<span
 					className={`start-page__input-error ${
-						(nameValue.isEmpty ||
-							nameValue.minLengthError ||
-							nameValue.maxLengthError) &&
-						nameValue.isDirty
+						(nameValueRegister.isEmpty ||
+							nameValueRegister.minLengthError ||
+							nameValueRegister.maxLengthError) &&
+						nameValueRegister.isDirty
 							? 'start-page__input-error_active'
 							: ''
 					}`}
 				>
-					{nameValue.errorMessage}
+					{nameValueRegister.errorMessage}
 				</span>
 			</div>
 			<div className="start-page__input-container">
@@ -59,26 +61,27 @@ function Register({ useInput, handleValidForm, handleInvalidForm }) {
 				<input
 					name="email"
 					type="email"
+					required
 					className={`start-page__input ${
-						(emailValue.isEmpty || emailValue.isEmailError) &&
-						emailValue.isDirty
+						(emailValueRegister.isEmpty || emailValueRegister.isEmailError) &&
+						emailValueRegister.isDirty
 							? 'start-page__input_error'
 							: ''
 					}`}
 					placeholder="Введите email"
-					value={emailValue.value}
-					onChange={(e) => emailValue.onChange(e)}
-					onBlur={(e) => emailValue.onBlur(e)}
+					value={emailValueRegister.value}
+					onChange={(e) => emailValueRegister.onChange(e)}
+					onBlur={(e) => emailValueRegister.onBlur(e)}
 				/>
 				<span
 					className={`start-page__input-error ${
-						(emailValue.isEmpty || emailValue.isEmailError) &&
-						emailValue.isDirty
+						(emailValueRegister.isEmpty || emailValueRegister.isEmailError) &&
+						emailValueRegister.isDirty
 							? 'start-page__input-error_active'
 							: ''
 					}`}
 				>
-					{emailValue.errorMessage}
+					{emailValueRegister.errorMessage}
 				</span>
 			</div>
 			<div className="start-page__input-container">
@@ -86,24 +89,25 @@ function Register({ useInput, handleValidForm, handleInvalidForm }) {
 				<input
 					name="password"
 					type="password"
+					required
 					className={`start-page__input ${
-						passwordValue.isEmpty && passwordValue.isDirty
+						passwordValueRegister.isEmpty && passwordValueRegister.isDirty
 							? 'start-page__input_error'
 							: ''
 					}`}
 					placeholder="Введите пароль"
-					value={passwordValue.value}
-					onChange={(e) => passwordValue.onChange(e)}
-					onBlur={(e) => passwordValue.onBlur(e)}
+					value={passwordValueRegister.value}
+					onChange={(e) => passwordValueRegister.onChange(e)}
+					onBlur={(e) => passwordValueRegister.onBlur(e)}
 				/>
 				<span
 					className={`start-page__input-error ${
-						passwordValue.isEmpty && passwordValue.isDirty
+						passwordValueRegister.isEmpty && passwordValueRegister.isDirty
 							? 'start-page__input-error_active'
 							: ''
 					}`}
 				>
-					{passwordValue.errorMessage}
+					{passwordValueRegister.errorMessage}
 				</span>
 			</div>
 		</>

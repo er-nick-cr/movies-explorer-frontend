@@ -1,135 +1,157 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
-import validator from 'validator';
+import useInput from '../../hooks/useInput';
+import useWindowWidth from '../../hooks/useWindowWidth';
 import Content from '../Content/Content';
 import StartPage from '../StartPage/StartPage';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
 import NotFound from '../NotFound/NotFound';
-import savedMovies from '../../utils/savedMovies';
-import user from '../../utils/user';
 import moviesApi from '../../utils/MoviesApi';
+import mainApi from '../../utils/MainApi';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { SavedMoviesContext } from '../../contexts/SavedMoviesContext';
 
 function App() {
-	const [scroll, setScroll] = useState(0);
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const [movies, setMovies] = useState([]);
-	const [searchedMovies, setSearchedMovies] = useState([]);
-	const [searchValue, setSearchValue] = useState('');
-
-	useEffect(() => {
-		moviesApi.getMovies().then((movies) => {
-			setMovies(movies);
-			console.log(movies);
-		});
-	}, []);
-
-	useEffect(() => {
-		const result = movies.filter(
-			(movie) =>
-				(movie.country ||
-					movie.description ||
-					movie.director ||
-					movie.nameEN ||
-					movie.nameRU) === searchValue.toString()
-		);
-
-		setSearchedMovies(result);
-	}, [searchValue, movies]);
-
 	const location = useLocation();
 
 	const history = useHistory();
 
-	const useValidation = (value, validations) => {
-		const [isEmpty, setIsEmpty] = useState(true);
-		const [minLengthError, setMinLengthError] = useState(false);
-		const [maxLengthError, setMaxLengthError] = useState(false);
-		const [errorMessage, setErrorMessage] = useState('');
-		const [isEmailError, setIsEmailError] = useState(false);
-		const [isValid, setIsValid] = useState(true);
+	const [scroll, setScroll] = useState(0);
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [searchedMovies, setSearchedMovies] = useState([]);
+	const [savedMovies, setSavedMovies] = useState([]);
+	const [searchValue, setSearchValue] = useState('');
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [isSearchSucces, setIsSearchSucces] = useState(true);
+	const [cardQuantity, setCardQuantity] = useState(0);
+	const [extraCardQuantity, setExtraCardQuantity] = useState(0);
+	const screenWidth = useWindowWidth();
+	const [isResOk, setResOk] = useState();
+	const [currentUser, setCurrentUser] = useState();
 
-		useEffect(() => {
-			for (const validation in validations) {
-				switch (validation) {
-					case 'minLength':
-						value.length < validations[validation]
-							? setMinLengthError(true)
-							: setMinLengthError(false);
-						break;
-					case 'maxLength':
-						value.length > validations[validation]
-							? setMaxLengthError(true)
-							: setMaxLengthError(false);
-						break;
-					case 'isEmpty':
-						value ? setIsEmpty(false) : setIsEmpty(true);
-						break;
-					case 'isEmail':
-						validator.isEmail(value)
-							? setIsEmailError(false)
-							: setIsEmailError(true);
-						break;
-					default:
-						break;
+	useEffect(() => {
+		if (isLoggedIn) {
+			Promise.all([mainApi.getUserInfo(), mainApi.getMovies()])
+				.then(([userInfo, movies]) => {
+					setCurrentUser(userInfo.user);
+					setSavedMovies(movies);
+					console.log(userInfo);
+				})
+				.catch((err) => console.log(err));
+		}
+	}, [isLoggedIn]);
+
+	function handleSubmitSearch(e, searchValue) {
+		e.preventDefault();
+		setIsSubmitting(true);
+		setSearchValue(searchValue);
+	}
+
+	function handleLogin(email, password) {
+		mainApi
+			.loginUser(email, password)
+			.then((data) => {
+				if (data) {
+					setIsLoggedIn(true);
+					history.push('/');
 				}
+			})
+			.catch((err) => console.log(err));
+	}
 
-				isEmpty || minLengthError || maxLengthError || isEmailError
-					? setIsValid(false)
-					: setIsValid(true);
+	function handleRegister(name, email, password) {
+		mainApi
+			.registerUser(name, email, password)
+			.then((res) => {
+				if (res) {
+					setResOk(true);
+					handleLogin(email, password);
+				}
+			})
+			.catch((err) => {
+				if (err) {
+					setResOk(false);
+				}
+			});
+	}
 
-				minLengthError && value
-					? setErrorMessage('Колличество символов не может быть меньше 2')
-					: maxLengthError && value
-					? setErrorMessage('Колличество символов не может быть больше 30')
-					: !value
-					? setErrorMessage('Поле не может быть пустым')
-					: isEmailError
-					? setErrorMessage('Введите email')
-					: setErrorMessage('');
-			}
-		}, [
-			value,
-			isEmailError,
-			maxLengthError,
-			minLengthError,
-			validations,
-			isEmpty,
-			isValid,
-		]);
+	useEffect(() => {
+		mainApi
+			.checkToken()
+			.then(({ user }) => {
+				if (user) {
+					setIsLoggedIn(true);
+					history.push(
+						`${
+							location.pathname === '/signin' || location.pathname === 'signup'
+								? '/'
+								: location.pathname
+						}`
+					);
+				}
+			})
+			.catch((err) => console.log(err));
+	}, [history]);
 
-		return {
-			isEmpty,
-			minLengthError,
-			maxLengthError,
-			errorMessage,
-			isEmailError,
-			isValid,
-		};
-	};
+	function handleUpdateUser(name, email) {
+		mainApi
+			.editProfile(name, email)
+			.then((userInfo) => {
+				console.log(userInfo);
+				setCurrentUser(userInfo);
+			})
+			.catch((err) => console.log(err));
+	}
 
-	const useInput = (initialValue, validations, validateEmail) => {
-		const [value, setValue] = useState(initialValue);
-		const [isDirty, setIsDirty] = useState(false);
-		const valid = useValidation(value, validations, validateEmail);
+	useEffect(() => {
+		if (isSubmitting) {
+			moviesApi
+				.getMovies()
+				.then((movies) => {
+					console.log(movies);
+					const result = movies.filter(
+						(movie) =>
+							movie.nameRU?.toLowerCase().indexOf(searchValue.toLowerCase()) >
+								-1 ||
+							movie.description
+								?.toLowerCase()
+								.indexOf(searchValue.toLowerCase()) > -1 ||
+							movie.director?.toLowerCase().indexOf(searchValue.toLowerCase()) >
+								-1 ||
+							movie.nameEN?.toLowerCase().indexOf(searchValue.toLowerCase()) >
+								-1 ||
+							movie.country?.toLowerCase().indexOf(searchValue.toLowerCase()) >
+								-1
+					);
+					console.log(result);
+					setSearchedMovies(result);
+					setIsSearchSucces(true);
+					setIsSubmitting(false);
+				})
+				.catch((err) => {
+					console.log(err);
+					setIsSubmitting(false);
+					setIsSearchSucces(false);
+				});
+		}
+	}, [searchValue, isSubmitting, cardQuantity]);
 
-		const onChange = (e) => {
-			setValue(e.target.value);
-		};
+	useEffect(() => {
+		console.log(screenWidth);
+		screenWidth >= 991
+			? setCardQuantity(12)
+			: screenWidth < 991 && screenWidth >= 768
+			? setCardQuantity(8)
+			: setCardQuantity(5);
 
-		const onBlur = (e) => {
-			setIsDirty(true);
-		};
+		screenWidth >= 991 ? setExtraCardQuantity(3) : setExtraCardQuantity(2);
+	}, [screenWidth]);
 
-		return {
-			value,
-			isDirty,
-			onChange,
-			onBlur,
-			...valid,
-		};
-	};
+	function handleShowExtraCards() {
+		setCardQuantity((prevQuantity) => prevQuantity + extraCardQuantity);
+	}
 
 	function handleGoBack() {
 		history.goBack();
@@ -143,10 +165,6 @@ function App() {
 		setIsMenuOpen(false);
 	}
 
-	useEffect(() => {
-		setIsLoggedIn(true);
-	}, [isLoggedIn]);
-
 	const handleScroll = () => {
 		setScroll(window.scrollY);
 	};
@@ -156,50 +174,65 @@ function App() {
 	}, []);
 
 	return (
-		<div className="page">
-			<Switch>
-				<Route path="/signup" exact>
-					<StartPage
-						heading="Добро пожаловать!"
-						buttonText="Зарегистрироваться"
-						component={Register}
-						question="Уже зарегистрированы?"
-						link="/signin"
-						linkText="Войти"
-						useInput={useInput}
-					/>
-				</Route>
-				<Route path="/signin" exact>
-					<StartPage
-						heading="Рады видеть!"
-						buttonText="Войти"
-						component={Login}
-						question="Ещё не зарегистрированы?"
-						link="/signup"
-						linkText="Регистрация"
-						useInput={useInput}
-					/>
-				</Route>
-				<Route path={['/', '/saved-movies', '/movies', '/profile']} exact>
-					<Content
-						isMenuOpen={isMenuOpen}
-						handleOpenMenu={handleOpenMenu}
-						handleCloseMenu={handleCloseMenu}
-						scroll={scroll}
-						isLoggedIn={isLoggedIn}
-						movies={searchedMovies}
-						savedMovies={savedMovies}
-						location={location}
-						user={user}
-						useInput={useInput}
-						setSearchValue={setSearchValue}
-					/>
-				</Route>
-				<Route path="/*">
-					<NotFound handleGoBack={handleGoBack} />
-				</Route>
-			</Switch>
-		</div>
+		<CurrentUserContext.Provider value={currentUser}>
+			<div className="page">
+				<Switch>
+					<Route path="/signup" exact>
+						<StartPage
+							heading="Добро пожаловать!"
+							buttonText="Зарегистрироваться"
+							component={Register}
+							question="Уже зарегистрированы?"
+							link="/signin"
+							linkText="Войти"
+							useInput={useInput}
+							handleRegister={handleRegister}
+							buttonErrorText="Ошибка регистрации"
+							isResOk={isResOk}
+							location={location}
+						/>
+					</Route>
+					<Route path="/signin" exact>
+						<StartPage
+							heading="Рады видеть!"
+							buttonText="Войти"
+							component={Login}
+							question="Ещё не зарегистрированы?"
+							link="/signup"
+							linkText="Регистрация"
+							useInput={useInput}
+							buttonErrorText="Ошибка входа"
+							isResOk={isResOk}
+							handleLogin={handleLogin}
+							location={location}
+						/>
+					</Route>
+					<Route path={['/', '/saved-movies', '/movies', '/profile']} exact>
+						<Content
+							isMenuOpen={isMenuOpen}
+							handleOpenMenu={handleOpenMenu}
+							handleCloseMenu={handleCloseMenu}
+							scroll={scroll}
+							isLoggedIn={isLoggedIn}
+							movies={searchedMovies}
+							savedMovies={savedMovies}
+							location={location}
+							useInput={useInput}
+							setSearchValue={setSearchValue}
+							isSubmitting={isSubmitting}
+							handleSubmitSearch={handleSubmitSearch}
+							isSearchSucces={isSearchSucces}
+							cardQuantity={cardQuantity}
+							handleShowExtraCards={handleShowExtraCards}
+							handleUpdateUser={handleUpdateUser}
+						/>
+					</Route>
+					<Route path="/*">
+						<NotFound handleGoBack={handleGoBack} />
+					</Route>
+				</Switch>
+			</div>
+		</CurrentUserContext.Provider>
 	);
 }
 

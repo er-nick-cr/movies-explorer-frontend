@@ -25,4 +25,5 @@ const moviesApi = new MoviesApi({
 		'Content-Type': 'application/json',
 	},
 });
+
 export default moviesApi;

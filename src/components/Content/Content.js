@@ -18,6 +18,12 @@ function Content({
 	handleCloseMenu,
 	useInput,
 	setSearchValue,
+	isSubmitting,
+	handleSubmitSearch,
+	isSearchSucces,
+	cardQuantity,
+	handleShowExtraCards,
+	handleUpdateUser,
 }) {
 	return (
 		<>
@@ -37,6 +43,11 @@ function Content({
 						savedClass=""
 						useInput={useInput}
 						setSearchValue={setSearchValue}
+						isSubmitting={isSubmitting}
+						handleSubmitSearch={handleSubmitSearch}
+						isSearchSucces={isSearchSucces}
+						cardQuantity={cardQuantity}
+						handleShowExtraCards={handleShowExtraCards}
 					/>
 				</Route>
 				<Route path="/saved-movies">
@@ -46,10 +57,19 @@ function Content({
 						savedClass="card__button_saved"
 						useInput={useInput}
 						setSearchValue={setSearchValue}
+						isSubmitting={isSubmitting}
+						handleSubmitSearch={handleSubmitSearch}
+						isSearchSucces={isSearchSucces}
+						cardQuantity={cardQuantity}
+						handleShowExtraCards={handleShowExtraCards}
 					/>
 				</Route>
 				<Route path="/profile">
-					<Profile user={user} useInput={useInput} />
+					<Profile
+						user={user}
+						useInput={useInput}
+						handleUpdateUser={handleUpdateUser}
+					/>
 				</Route>
 				<Route path="/">
 					<Main />

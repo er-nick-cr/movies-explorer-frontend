@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 
-function SearchForm({ setSearchValue, useInput }) {
+function SearchForm({ useInput, handleSubmitSearch }) {
 	const [isFocused, setIsFocused] = useState(false);
 
 	const searchValue = useInput('', {});
 
-	function handleSubmitForm(e) {
-		e.preventDefault();
-		setSearchValue(searchValue.value);
+	function handleSubmit(e) {
+		handleSubmitSearch(e, searchValue.value);
 	}
 
 	function handleEnableFocus() {
@@ -24,7 +23,7 @@ function SearchForm({ setSearchValue, useInput }) {
 				className={`search-form__container ${
 					isFocused ? 'search-form__container_focus' : ''
 				}`}
-				onSubmit={handleSubmitForm}
+				onSubmit={handleSubmit}
 			>
 				<fieldset className="search-form__field">
 					<input

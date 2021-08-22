@@ -1,20 +1,31 @@
 import React from 'react';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-function Profile({ useInput }) {
-	const nameValue = useInput('Никита', {
-		isEmpty: true,
-		minLength: 2,
-		maxLength: 30,
-	});
+function Profile({ useInput, handleUpdateUser }) {
+	const currentUser = React.useContext(CurrentUserContext);
 
-	const emailValue = useInput('nikita@yandex.ru', {
+	const nameValue = useInput(
+		`${currentUser?.name === undefined ? '' : currentUser.name}`,
+		{
+			isEmpty: true,
+			minLength: 2,
+			maxLength: 30,
+		}
+	);
+
+	const emailValue = useInput(`${currentUser?.email}`, {
 		isEmpty: true,
 		isEmail: false,
 	});
 
+	function handleSubmit(e) {
+		e.preventDefault();
+		handleUpdateUser(nameValue.value, emailValue.value);
+	}
+
 	return (
 		<section className="profile">
-			<form className="profile__form">
+			<form className="profile__form" onSubmit={handleSubmit}>
 				<h3 className="profile__heading">Привет, Никита</h3>
 				<fieldset className="profile__fieldset">
 					<div className="profile__input-container">

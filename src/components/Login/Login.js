@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react';
 
-function Login({ useInput, handleValidForm, handleInvalidForm }) {
-	const emailValue = useInput('', { isEmpty: true, isEmail: false });
-	const passwordValue = useInput('', { isEmpty: true });
-
+function Login({
+	handleValidForm,
+	handleInvalidForm,
+	emailValueLogin,
+	passwordValueLogin,
+}) {
 	useEffect(() => {
-		emailValue.isValid && passwordValue.isValid
+		emailValueLogin.isValid && passwordValueLogin.isValid
 			? handleValidForm()
 			: handleInvalidForm();
 	}, [
-		emailValue.isValid,
-		passwordValue.isValid,
+		emailValueLogin.isValid,
+		passwordValueLogin.isValid,
 		handleValidForm,
 		handleInvalidForm,
 	]);
@@ -23,25 +25,25 @@ function Login({ useInput, handleValidForm, handleInvalidForm }) {
 					name="email"
 					type="email"
 					className={`start-page__input ${
-						(emailValue.isEmpty || emailValue.isEmailError) &&
-						emailValue.isDirty
+						(emailValueLogin.isEmpty || emailValueLogin.isEmailError) &&
+						emailValueLogin.isDirty
 							? 'start-page__input_error'
 							: ''
 					}`}
 					placeholder="Введите email"
-					value={emailValue.value}
-					onChange={(e) => emailValue.onChange(e)}
-					onBlur={(e) => emailValue.onBlur(e)}
+					value={emailValueLogin.value}
+					onChange={(e) => emailValueLogin.onChange(e)}
+					onBlur={(e) => emailValueLogin.onBlur(e)}
 				/>
 				<span
 					className={`start-page__input-error ${
-						(emailValue.isEmpty || emailValue.isEmailError) &&
-						emailValue.isDirty
+						(emailValueLogin.isEmpty || emailValueLogin.isEmailError) &&
+						emailValueLogin.isDirty
 							? 'start-page__input-error_active'
 							: ''
 					}`}
 				>
-					{emailValue.errorMessage}
+					{emailValueLogin.errorMessage}
 				</span>
 			</div>
 			<div className="start-page__input-container">
@@ -50,23 +52,23 @@ function Login({ useInput, handleValidForm, handleInvalidForm }) {
 					name="password"
 					type="password"
 					className={`start-page__input ${
-						passwordValue.isEmpty && passwordValue.isDirty
+						passwordValueLogin.isEmpty && passwordValueLogin.isDirty
 							? 'start-page__input_error'
 							: ''
 					}`}
 					placeholder="Введите пароль"
-					value={passwordValue.value}
-					onChange={(e) => passwordValue.onChange(e)}
-					onBlur={(e) => passwordValue.onBlur(e)}
+					value={passwordValueLogin.value}
+					onChange={(e) => passwordValueLogin.onChange(e)}
+					onBlur={(e) => passwordValueLogin.onBlur(e)}
 				/>
 				<span
 					className={`start-page__input-error ${
-						passwordValue.isEmpty && passwordValue.isDirty
+						passwordValueLogin.isEmpty && passwordValueLogin.isDirty
 							? 'start-page__input-error_active'
 							: ''
 					}`}
 				>
-					{passwordValue.errorMessage}
+					{passwordValueLogin.errorMessage}
 				</span>
 			</div>
 		</>
