@@ -5,6 +5,7 @@ import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import Footer from '../Footer/Footer';
 import Profile from '../Profile/Profile';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 function Content({
 	scroll,
@@ -24,7 +25,18 @@ function Content({
 	cardQuantity,
 	handleShowExtraCards,
 	handleUpdateUser,
+	isMoviesSearched,
+	handleLogout,
+	isMovieSaved,
+	handleSaveMovie,
+	handleDeleteMovie,
+	isSaved,
+	shortMovies,
+	handleCheckboxToggle,
 }) {
+	console.log(movies);
+
+	console.log(savedMovies);
 	return (
 		<>
 			<Header
@@ -37,8 +49,9 @@ function Content({
 			/>
 			<Switch>
 				<Route path="/movies">
-					<Movies
+					<ProtectedRoute
 						movies={movies}
+						imageUrl="https://api.nomoreparties.co"
 						location={location}
 						savedClass=""
 						useInput={useInput}
@@ -48,11 +61,21 @@ function Content({
 						isSearchSucces={isSearchSucces}
 						cardQuantity={cardQuantity}
 						handleShowExtraCards={handleShowExtraCards}
+						isMoviesSearched={isMoviesSearched}
+						component={Movies}
+						isLoggedIn={isLoggedIn}
+						isMovieSaved={isMovieSaved}
+						handleSaveMovie={handleSaveMovie}
+						handleDeleteMovie={handleDeleteMovie}
+						isSaved={isSaved}
+						shortMovies={shortMovies}
+						handleCheckboxToggle={handleCheckboxToggle}
 					/>
 				</Route>
 				<Route path="/saved-movies">
-					<Movies
+					<ProtectedRoute
 						movies={savedMovies}
+						imageUrl=""
 						location={location}
 						savedClass="card__button_saved"
 						useInput={useInput}
@@ -60,15 +83,27 @@ function Content({
 						isSubmitting={isSubmitting}
 						handleSubmitSearch={handleSubmitSearch}
 						isSearchSucces={isSearchSucces}
-						cardQuantity={cardQuantity}
+						cardQuantity={100}
 						handleShowExtraCards={handleShowExtraCards}
+						isMoviesSearched={isMoviesSearched}
+						component={Movies}
+						isLoggedIn={isLoggedIn}
+						isMovieSaved={isMovieSaved}
+						handleSaveMovie={handleSaveMovie}
+						handleDeleteMovie={handleDeleteMovie}
+						isSaved={isSaved}
+						shortMovies={shortMovies}
+						handleCheckboxToggle={handleCheckboxToggle}
 					/>
 				</Route>
 				<Route path="/profile">
-					<Profile
+					<ProtectedRoute
 						user={user}
 						useInput={useInput}
 						handleUpdateUser={handleUpdateUser}
+						handleLogout={handleLogout}
+						component={Profile}
+						isLoggedIn={isLoggedIn}
 					/>
 				</Route>
 				<Route path="/">

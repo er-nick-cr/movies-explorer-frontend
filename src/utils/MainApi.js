@@ -36,6 +36,14 @@ class MainApi {
 		}).then(this._checkResponse);
 	}
 
+	logoutUser() {
+		return fetch(`${this._address}/signout`, {
+			method: 'POST',
+			credentials: 'include',
+			headers: this._headers,
+		}).then(this._checkResponse);
+	}
+
 	checkToken() {
 		return fetch(`${this._address}/users/me`, {
 			headers: this._headers,
@@ -66,6 +74,35 @@ class MainApi {
 		return fetch(`${this._address}/movies`, {
 			headers: this._headers,
 			credentials: 'include',
+		}).then(this._checkResponse);
+	}
+
+	saveMovie(movie) {
+		return fetch(`${this._address}/movies`, {
+			method: 'POST',
+			credentials: 'include',
+			headers: this._headers,
+			body: JSON.stringify({
+				country: movie.country,
+				director: movie.director,
+				duration: movie.duration,
+				year: movie.year,
+				description: movie.description,
+				image: `https://api.nomoreparties.co${movie.image.url}`,
+				trailer: movie.trailerLink,
+				nameRU: movie.nameRU,
+				nameEN: movie.nameEN,
+				thumbnail: `https://api.nomoreparties.co${movie.image.url}`,
+				movieId: movie.id,
+			}),
+		}).then(this._checkResponse);
+	}
+
+	deleteMovie(movieId) {
+		return fetch(`${this._address}/movies/${movieId}`, {
+			method: 'DELETE',
+			credentials: 'include',
+			headers: this._headers,
 		}).then(this._checkResponse);
 	}
 }

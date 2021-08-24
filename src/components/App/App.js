@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { SavedMoviesContext } from '../../contexts/SavedMoviesContext';
 import useInput from '../../hooks/useInput';
 import useWindowWidth from '../../hooks/useWindowWidth';
 import Content from '../Content/Content';
@@ -9,8 +11,6 @@ import Login from '../Login/Login';
 import NotFound from '../NotFound/NotFound';
 import moviesApi from '../../utils/MoviesApi';
 import mainApi from '../../utils/MainApi';
-import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-import { SavedMoviesContext } from '../../contexts/SavedMoviesContext';
 
 function App() {
 	const location = useLocation();
@@ -21,8 +21,10 @@ function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [searchedMovies, setSearchedMovies] = useState([]);
+	const [prevSearchedMovies, setPrevSearchedMovies] = useState([]);
 	const [savedMovies, setSavedMovies] = useState([]);
 	const [searchValue, setSearchValue] = useState('');
+	const [isMoviesSearched, setIsMoviesSearched] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [isSearchSucces, setIsSearchSucces] = useState(true);
 	const [cardQuantity, setCardQuantity] = useState(0);
@@ -30,6 +32,9 @@ function App() {
 	const screenWidth = useWindowWidth();
 	const [isResOk, setResOk] = useState();
 	const [currentUser, setCurrentUser] = useState();
+	const [isMovieSaved, setIsMovieSaved] = useState(false);
+	const [isSaved, setIsSaved] = useState(false);
+	const [shortMovies, setShortMovies] = useState(false);
 
 	useEffect(() => {
 		if (isLoggedIn) {
@@ -47,6 +52,7 @@ function App() {
 		e.preventDefault();
 		setIsSubmitting(true);
 		setSearchValue(searchValue);
+		setIsMoviesSearched(true);
 	}
 
 	function handleLogin(email, password) {
@@ -77,12 +83,83 @@ function App() {
 			});
 	}
 
+	function handleLogout() {
+		mainApi
+			.logoutUser()
+			.then((res) => {
+				if (res) {
+					setIsLoggedIn(false);
+					history.push('/signin');
+				}
+			})
+			.catch((err) => console.log(err));
+	}
+
+	function handleSaveMovie(movie) {
+		mainApi
+			.saveMovie(movie)
+			.then((newMovie) => {
+				setSavedMovies([newMovie, ...savedMovies]);
+				setSearchedMovies((state) => {
+					return state.map((m) => {
+						if (m.id === newMovie.movieId) {
+							m._id = newMovie._id;
+						}
+						return m;
+					});
+				});
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}
+
+	function handleCheckboxToggle() {
+		setShortMovies(!shortMovies);
+	}
+
+	useEffect(() => {
+		if (shortMovies) {
+			setPrevSearchedMovies(searchedMovies);
+			setSearchedMovies((state) => {
+				return state.filter((c) => {
+					return c.duration < 40;
+				});
+			});
+		} else if (!shortMovies) {
+			setSearchedMovies(prevSearchedMovies);
+		}
+	}, [shortMovies]);
+
+	function handleDeleteMovie(movie) {
+		mainApi.deleteMovie(movie._id).then(() => {
+			setSavedMovies((state) => {
+				console.log(state);
+				return state.filter((c) => {
+					return c._id !== movie._id;
+				});
+			});
+			setSearchedMovies((state) => {
+				return state.map((m) => {
+					if (m._id === movie._id) {
+						delete m._id;
+					}
+					return m;
+				});
+			});
+
+			console.log(searchedMovies);
+			console.log(savedMovies);
+		});
+	}
+
 	useEffect(() => {
 		mainApi
 			.checkToken()
 			.then(({ user }) => {
 				if (user) {
 					setIsLoggedIn(true);
+					console.log(window.history);
 					history.push(
 						`${
 							location.pathname === '/signin' || location.pathname === 'signup'
@@ -99,14 +176,14 @@ function App() {
 		mainApi
 			.editProfile(name, email)
 			.then((userInfo) => {
-				console.log(userInfo);
 				setCurrentUser(userInfo);
 			})
 			.catch((err) => console.log(err));
 	}
 
 	useEffect(() => {
-		if (isSubmitting) {
+		console.log(isSubmitting);
+		if (isSubmitting && location.pathname === '/movies') {
 			moviesApi
 				.getMovies()
 				.then((movies) => {
@@ -125,8 +202,50 @@ function App() {
 							movie.country?.toLowerCase().indexOf(searchValue.toLowerCase()) >
 								-1
 					);
+					const mapResult = result.map((searchedMovie) => {
+						savedMovies.map((savedMovie) => {
+							if (savedMovie.movieId === searchedMovie.id) {
+								searchedMovie._id = savedMovie._id;
+								setIsSaved(true);
+								return searchedMovie;
+							}
+							return searchedMovie;
+						});
+						return searchedMovie;
+					});
+
+					console.log(mapResult);
+
+					setSearchedMovies(mapResult);
+					setIsSearchSucces(true);
+					setIsSubmitting(false);
+				})
+				.catch((err) => {
+					console.log(err);
+					setIsSubmitting(false);
+					setIsSearchSucces(false);
+				});
+		} else if (isSubmitting && location.pathname === '/saved-movies') {
+			mainApi
+				.getMovies()
+				.then((movies) => {
+					console.log(movies);
+					const result = movies.filter(
+						(movie) =>
+							movie.nameRU?.toLowerCase().indexOf(searchValue.toLowerCase()) >
+								-1 ||
+							movie.description
+								?.toLowerCase()
+								.indexOf(searchValue.toLowerCase()) > -1 ||
+							movie.director?.toLowerCase().indexOf(searchValue.toLowerCase()) >
+								-1 ||
+							movie.nameEN?.toLowerCase().indexOf(searchValue.toLowerCase()) >
+								-1 ||
+							movie.country?.toLowerCase().indexOf(searchValue.toLowerCase()) >
+								-1
+					);
 					console.log(result);
-					setSearchedMovies(result);
+					setSavedMovies(result);
 					setIsSearchSucces(true);
 					setIsSubmitting(false);
 				})
@@ -136,7 +255,7 @@ function App() {
 					setIsSearchSucces(false);
 				});
 		}
-	}, [searchValue, isSubmitting, cardQuantity]);
+	}, [searchValue, isSubmitting, location.pathname, savedMovies]);
 
 	useEffect(() => {
 		console.log(screenWidth);
@@ -175,63 +294,73 @@ function App() {
 
 	return (
 		<CurrentUserContext.Provider value={currentUser}>
-			<div className="page">
-				<Switch>
-					<Route path="/signup" exact>
-						<StartPage
-							heading="Добро пожаловать!"
-							buttonText="Зарегистрироваться"
-							component={Register}
-							question="Уже зарегистрированы?"
-							link="/signin"
-							linkText="Войти"
-							useInput={useInput}
-							handleRegister={handleRegister}
-							buttonErrorText="Ошибка регистрации"
-							isResOk={isResOk}
-							location={location}
-						/>
-					</Route>
-					<Route path="/signin" exact>
-						<StartPage
-							heading="Рады видеть!"
-							buttonText="Войти"
-							component={Login}
-							question="Ещё не зарегистрированы?"
-							link="/signup"
-							linkText="Регистрация"
-							useInput={useInput}
-							buttonErrorText="Ошибка входа"
-							isResOk={isResOk}
-							handleLogin={handleLogin}
-							location={location}
-						/>
-					</Route>
-					<Route path={['/', '/saved-movies', '/movies', '/profile']} exact>
-						<Content
-							isMenuOpen={isMenuOpen}
-							handleOpenMenu={handleOpenMenu}
-							handleCloseMenu={handleCloseMenu}
-							scroll={scroll}
-							isLoggedIn={isLoggedIn}
-							movies={searchedMovies}
-							savedMovies={savedMovies}
-							location={location}
-							useInput={useInput}
-							setSearchValue={setSearchValue}
-							isSubmitting={isSubmitting}
-							handleSubmitSearch={handleSubmitSearch}
-							isSearchSucces={isSearchSucces}
-							cardQuantity={cardQuantity}
-							handleShowExtraCards={handleShowExtraCards}
-							handleUpdateUser={handleUpdateUser}
-						/>
-					</Route>
-					<Route path="/*">
-						<NotFound handleGoBack={handleGoBack} />
-					</Route>
-				</Switch>
-			</div>
+			<SavedMoviesContext.Provider value={savedMovies}>
+				<div className="page">
+					<Switch>
+						<Route path="/signup" exact>
+							<StartPage
+								heading="Добро пожаловать!"
+								buttonText="Зарегистрироваться"
+								component={Register}
+								question="Уже зарегистрированы?"
+								link="/signin"
+								linkText="Войти"
+								useInput={useInput}
+								handleRegister={handleRegister}
+								buttonErrorText="Ошибка регистрации"
+								isResOk={isResOk}
+								location={location}
+							/>
+						</Route>
+						<Route path="/signin" exact>
+							<StartPage
+								heading="Рады видеть!"
+								buttonText="Войти"
+								component={Login}
+								question="Ещё не зарегистрированы?"
+								link="/signup"
+								linkText="Регистрация"
+								useInput={useInput}
+								buttonErrorText="Ошибка входа"
+								isResOk={isResOk}
+								handleLogin={handleLogin}
+								location={location}
+							/>
+						</Route>
+						<Route path={['/', '/saved-movies', '/movies', '/profile']} exact>
+							<Content
+								isMenuOpen={isMenuOpen}
+								handleOpenMenu={handleOpenMenu}
+								handleCloseMenu={handleCloseMenu}
+								scroll={scroll}
+								isLoggedIn={isLoggedIn}
+								movies={searchedMovies}
+								savedMovies={savedMovies}
+								location={location}
+								useInput={useInput}
+								setSearchValue={setSearchValue}
+								isSubmitting={isSubmitting}
+								handleSubmitSearch={handleSubmitSearch}
+								isSearchSucces={isSearchSucces}
+								cardQuantity={cardQuantity}
+								handleShowExtraCards={handleShowExtraCards}
+								handleUpdateUser={handleUpdateUser}
+								isMoviesSearched={isMoviesSearched}
+								handleLogout={handleLogout}
+								isMovieSaved={isMovieSaved}
+								handleSaveMovie={handleSaveMovie}
+								handleDeleteMovie={handleDeleteMovie}
+								isSaved={isSaved}
+								shortMovies={shortMovies}
+								handleCheckboxToggle={handleCheckboxToggle}
+							/>
+						</Route>
+						<Route path="/*">
+							<NotFound handleGoBack={handleGoBack} />
+						</Route>
+					</Switch>
+				</div>
+			</SavedMoviesContext.Provider>
 		</CurrentUserContext.Provider>
 	);
 }

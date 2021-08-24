@@ -1,7 +1,7 @@
 import React from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-function Profile({ useInput, handleUpdateUser }) {
+function Profile({ useInput, handleUpdateUser, handleLogout }) {
 	const currentUser = React.useContext(CurrentUserContext);
 
 	const nameValue = useInput(
@@ -23,10 +23,15 @@ function Profile({ useInput, handleUpdateUser }) {
 		handleUpdateUser(nameValue.value, emailValue.value);
 	}
 
+	function handleSubmitLogout(e) {
+		e.preventDefault();
+		handleLogout();
+	}
+
 	return (
 		<section className="profile">
 			<form className="profile__form" onSubmit={handleSubmit}>
-				<h3 className="profile__heading">Привет, Никита</h3>
+				<h3 className="profile__heading">{`Привет, ${currentUser?.name}`}</h3>
 				<fieldset className="profile__fieldset">
 					<div className="profile__input-container">
 						<label className="profile__label">Имя</label>
@@ -99,7 +104,11 @@ function Profile({ useInput, handleUpdateUser }) {
 					Редактировать
 				</button>
 			</form>
-			<button type="button" className="profile__logout-button overlay cursor">
+			<button
+				type="button"
+				onClick={handleSubmitLogout}
+				className="profile__logout-button overlay cursor"
+			>
 				Выйти из аккаунта
 			</button>
 		</section>

@@ -14,6 +14,14 @@ function Movies({
 	isSearchSucces,
 	cardQuantity,
 	handleShowExtraCards,
+	isMoviesSearched,
+	isMovieSaved,
+	handleSaveMovie,
+	imageUrl,
+	handleDeleteMovie,
+	isSaved,
+	shortMovies,
+	handleCheckboxToggle,
 }) {
 	return (
 		<main className="movies">
@@ -21,6 +29,7 @@ function Movies({
 				useInput={useInput}
 				setSearchValue={setSearchValue}
 				handleSubmitSearch={handleSubmitSearch}
+				handleCheckboxToggle={handleCheckboxToggle}
 			/>
 			{isSubmitting ? (
 				<Preloader />
@@ -31,6 +40,13 @@ function Movies({
 					savedClass={savedClass}
 					cardQuantity={cardQuantity}
 					handleShowExtraCards={handleShowExtraCards}
+					isMoviesSearched={isMoviesSearched}
+					isMovieSaved={isMovieSaved}
+					handleSaveMovie={handleSaveMovie}
+					imageUrl={imageUrl}
+					handleDeleteMovie={handleDeleteMovie}
+					isSaved={isSaved}
+					shortMovies={shortMovies}
 				/>
 			) : (
 				<p className="movies__error">
