@@ -108,7 +108,7 @@ class MainApi {
 }
 
 const mainApi = new MainApi({
-	address: 'http://localhost:5000',
+	address: 'https://api.movies-explorer-dip.nomoredomains.monster',
 
 	headers: {
 		'Content-Type': 'application/json',

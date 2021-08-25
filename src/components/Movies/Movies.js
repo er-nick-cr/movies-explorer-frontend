@@ -15,7 +15,6 @@ function Movies({
 	cardQuantity,
 	handleShowExtraCards,
 	isMoviesSearched,
-	isMovieSaved,
 	handleSaveMovie,
 	imageUrl,
 	handleDeleteMovie,
@@ -41,7 +40,6 @@ function Movies({
 					cardQuantity={cardQuantity}
 					handleShowExtraCards={handleShowExtraCards}
 					isMoviesSearched={isMoviesSearched}
-					isMovieSaved={isMovieSaved}
 					handleSaveMovie={handleSaveMovie}
 					imageUrl={imageUrl}
 					handleDeleteMovie={handleDeleteMovie}

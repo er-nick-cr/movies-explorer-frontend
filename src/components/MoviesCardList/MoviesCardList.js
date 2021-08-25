@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
 function MoviesCardList({
@@ -8,12 +8,10 @@ function MoviesCardList({
 	cardQuantity,
 	handleShowExtraCards,
 	isMoviesSearched,
-	isMovieSaved,
 	handleSaveMovie,
 	imageUrl,
 	handleDeleteMovie,
 	isSaved,
-	shortMovies,
 }) {
 	return (
 		<section className="card-list">
@@ -26,7 +24,6 @@ function MoviesCardList({
 									key={movie.id || movie._id}
 									movie={movie}
 									savedClass={savedClass}
-									isMovieSaved={isMovieSaved}
 									handleSaveMovie={handleSaveMovie}
 									imageUrl={imageUrl}
 									location={location}

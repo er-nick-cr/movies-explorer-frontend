@@ -1,29 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-import { SavedMoviesContext } from '../../contexts/SavedMoviesContext';
+import React from 'react';
 
 function MoviesCard({
 	movie,
 	savedClass,
-	isMovieSaved,
 	handleSaveMovie,
 	imageUrl,
-	location,
 	handleDeleteMovie,
-	isSaved,
 }) {
-	const currentUser = React.useContext(CurrentUserContext);
-	const savedMovies = React.useContext(SavedMoviesContext);
-
-	// useEffect(() => {
-	// 	savedMovies.map((savedMovie) => {
-	// 		if (savedMovie.movieId === movie.id) {
-	// 			setIsSaved(true);
-	// 			movie._id = savedMovie._id;
-	// 		}
-	// 	});
-	// }, [location.pathname, movie.id, savedMovies]);
-
 	function handleDuration(duration) {
 		const hours = Math.trunc(duration / 60);
 		const minutes = duration % 60;
@@ -39,11 +22,7 @@ function MoviesCard({
 	}
 
 	return (
-		<article
-			className="card"
-			data-card-id={movie.movieId || movie.id}
-			data-owner-id={isMovieSaved ? currentUser._id : ''}
-		>
+		<article className="card" data-card-id={movie.movieId || movie.id}>
 			<img
 				src={`${imageUrl}${movie.image.url ? movie.image?.url : movie.image}`}
 				alt={movie.nameRU}

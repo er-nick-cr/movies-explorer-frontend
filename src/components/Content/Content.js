@@ -6,6 +6,7 @@ import Movies from '../Movies/Movies';
 import Footer from '../Footer/Footer';
 import Profile from '../Profile/Profile';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import InfoTooltip from '../InfoTooltip/InfoTooltip';
 
 function Content({
 	scroll,
@@ -33,10 +34,10 @@ function Content({
 	isSaved,
 	shortMovies,
 	handleCheckboxToggle,
+	isEditOk,
+	isOpen,
+	onClose,
 }) {
-	console.log(movies);
-
-	console.log(savedMovies);
 	return (
 		<>
 			<Header
@@ -105,6 +106,7 @@ function Content({
 						component={Profile}
 						isLoggedIn={isLoggedIn}
 					/>
+					<InfoTooltip isEditOk={isEditOk} isOpen={isOpen} onClose={onClose} />
 				</Route>
 				<Route path="/">
 					<Main />

@@ -22,5 +22,6 @@
 @import url(./components/Techs/Techs.css);
 @import url(./components/StartPage/StartPage.css);
 @import url(./components/NotFound/NotFound.css);
+@import url(./components/InfoTooltip/InfoTooltip.css);
 @import url(./styles/cursor.css);
 @import url(./styles/overlay.css);
