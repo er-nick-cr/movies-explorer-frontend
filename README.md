@@ -1,5 +1,7 @@
 ### Фронтенд проекта MOVIES EXPLORER
 
+Ссылка на проект: movies-explorer-dip.nomoredomains.monster
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
