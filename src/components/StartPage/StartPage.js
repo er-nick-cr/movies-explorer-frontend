@@ -16,6 +16,8 @@ function StartPage({
 	buttonErrorText,
 	isResOk,
 	location,
+	isLoginSubmiting,
+	isRegistrationSubmiting,
 }) {
 	const [isFormValid, setIsFormValid] = useState(false);
 	const nameValueRegister = useInput('', {
@@ -36,6 +38,13 @@ function StartPage({
 	function handleInvalidForm() {
 		setIsFormValid(false);
 	}
+
+	const isDisabled =
+		isLoginSubmiting || isRegistrationSubmiting
+			? true
+			: isFormValid
+			? false
+			: true;
 
 	function submitForm(e) {
 		e.preventDefault();
@@ -70,6 +79,8 @@ function StartPage({
 							passwordValueRegister={passwordValueRegister}
 							emailValueLogin={emailValueLogin}
 							passwordValueLogin={passwordValueLogin}
+							isLoginSubmiting={isLoginSubmiting}
+							isRegistrationSubmiting={isRegistrationSubmiting}
 						/>
 					</fieldset>
 					<span
@@ -84,7 +95,7 @@ function StartPage({
 						className={`start-page__button overlay cursor ${
 							isFormValid ? '' : 'start-page__button_disabled'
 						}`}
-						disabled={!isFormValid}
+						disabled={isDisabled}
 					>
 						{buttonText}
 					</button>

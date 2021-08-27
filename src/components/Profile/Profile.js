@@ -1,7 +1,12 @@
 import React from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-function Profile({ useInput, handleUpdateUser, handleLogout }) {
+function Profile({
+	useInput,
+	handleUpdateUser,
+	handleLogout,
+	isProfileSubmiting,
+}) {
 	const currentUser = React.useContext(CurrentUserContext);
 
 	const nameValue = useInput(
@@ -13,10 +18,27 @@ function Profile({ useInput, handleUpdateUser, handleLogout }) {
 		}
 	);
 
-	const emailValue = useInput(`${currentUser?.email}`, {
-		isEmpty: true,
-		isEmail: false,
-	});
+	const emailValue = useInput(
+		`${currentUser?.email === undefined ? '' : currentUser.email}`,
+		{
+			isEmpty: true,
+			isEmail: false,
+		}
+	);
+
+	const isEqual =
+		currentUser?.name === nameValue.value &&
+		currentUser?.email === emailValue.value;
+
+	const isValid = nameValue.isValid && emailValue.isValid;
+
+	const isDisabled = isProfileSubmiting
+		? true
+		: isEqual
+		? true
+		: isValid
+		? false
+		: true;
 
 	function handleSubmit(e) {
 		e.preventDefault();
@@ -38,6 +60,7 @@ function Profile({ useInput, handleUpdateUser, handleLogout }) {
 						<input
 							name="name"
 							type="text"
+							disabled={isProfileSubmiting}
 							className={`profile__input ${
 								(nameValue.isEmpty ||
 									nameValue.minLengthError ||
@@ -69,6 +92,7 @@ function Profile({ useInput, handleUpdateUser, handleLogout }) {
 						<input
 							type="email"
 							name="email"
+							disabled={isProfileSubmiting}
 							className={`profile__input ${
 								(emailValue.isEmpty || emailValue.isEmailError) &&
 								emailValue.isDirty
@@ -95,11 +119,9 @@ function Profile({ useInput, handleUpdateUser, handleLogout }) {
 				<button
 					type="submit"
 					className={`profile__submit-button overlay cursor ${
-						nameValue.isValid && emailValue.isValid
-							? ''
-							: 'profile__submit-button_disabled'
+						isDisabled ? 'profile__submit-button_disabled' : ''
 					}`}
-					disabled={!(nameValue.isValid && emailValue.isValid)}
+					disabled={isDisabled}
 				>
 					Редактировать
 				</button>

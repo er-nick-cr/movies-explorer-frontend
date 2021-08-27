@@ -5,6 +5,7 @@ function Login({
 	handleInvalidForm,
 	emailValueLogin,
 	passwordValueLogin,
+	isLoginSubmiting,
 }) {
 	useEffect(() => {
 		emailValueLogin.isValid && passwordValueLogin.isValid
@@ -24,6 +25,7 @@ function Login({
 				<input
 					name="email"
 					type="email"
+					disabled={isLoginSubmiting}
 					className={`start-page__input ${
 						(emailValueLogin.isEmpty || emailValueLogin.isEmailError) &&
 						emailValueLogin.isDirty
@@ -51,6 +53,7 @@ function Login({
 				<input
 					name="password"
 					type="password"
+					isLoginSubmiting={isLoginSubmiting}
 					className={`start-page__input ${
 						passwordValueLogin.isEmpty && passwordValueLogin.isDirty
 							? 'start-page__input_error'

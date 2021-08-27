@@ -37,6 +37,7 @@ function Content({
 	isEditOk,
 	isOpen,
 	onClose,
+	isProfileSubmiting,
 }) {
 	return (
 		<>
@@ -105,6 +106,7 @@ function Content({
 						handleLogout={handleLogout}
 						component={Profile}
 						isLoggedIn={isLoggedIn}
+						isProfileSubmiting={isProfileSubmiting}
 					/>
 					<InfoTooltip isEditOk={isEditOk} isOpen={isOpen} onClose={onClose} />
 				</Route>

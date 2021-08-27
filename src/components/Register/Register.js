@@ -7,6 +7,7 @@ function Register({
 	nameValueRegister,
 	emailValueRegister,
 	passwordValueRegister,
+	isRegistrationSubmiting,
 }) {
 	useEffect(() => {
 		emailValueRegister.isValid &&
@@ -30,6 +31,7 @@ function Register({
 					name="name"
 					type="text"
 					required
+					disabled={isRegistrationSubmiting}
 					className={`start-page__input ${
 						(nameValueRegister.isEmpty ||
 							nameValueRegister.minLengthError ||
@@ -61,6 +63,7 @@ function Register({
 				<input
 					name="email"
 					type="email"
+					disabled={isRegistrationSubmiting}
 					required
 					className={`start-page__input ${
 						(emailValueRegister.isEmpty || emailValueRegister.isEmailError) &&
@@ -89,6 +92,7 @@ function Register({
 				<input
 					name="password"
 					type="password"
+					disabled={isRegistrationSubmiting}
 					required
 					className={`start-page__input ${
 						passwordValueRegister.isEmpty && passwordValueRegister.isDirty

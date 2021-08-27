@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { SavedMoviesContext } from '../../contexts/SavedMoviesContext';
+import { CARD_QUANTITY, EXTRA_CARD_QUANTITY } from '../../utils/viewSettings';
 import useInput from '../../hooks/useInput';
 import useWindowWidth from '../../hooks/useWindowWidth';
 import Content from '../Content/Content';
@@ -20,6 +21,7 @@ function App() {
 	const [scroll, setScroll] = useState(0);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [apiResult, setApiResult] = useState([]);
 	const [searchedMovies, setSearchedMovies] = useState([]);
 	const [prevSearchedMovies, setPrevSearchedMovies] = useState([]);
 	const [savedMovies, setSavedMovies] = useState([]);
@@ -27,6 +29,9 @@ function App() {
 	const [searchValue, setSearchValue] = useState('');
 	const [isMoviesSearched, setIsMoviesSearched] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [isProfileSubmiting, setisProfileSubmiting] = useState(false);
+	const [isLoginSubmiting, setIsLoginSubmiting] = useState(false);
+	const [isRegistrationSubmiting, setIsRegistrationSubmiting] = useState(false);
 	const [isSearchSucces, setIsSearchSucces] = useState(true);
 	const [cardQuantity, setCardQuantity] = useState(0);
 	const [extraCardQuantity, setExtraCardQuantity] = useState(0);
@@ -40,10 +45,19 @@ function App() {
 
 	useEffect(() => {
 		if (isLoggedIn) {
-			Promise.all([mainApi.getUserInfo(), mainApi.getMovies()])
-				.then(([userInfo, movies]) => {
+			Promise.all([
+				mainApi.getUserInfo(),
+				mainApi.getMovies(),
+				moviesApi.getMovies(),
+			])
+				.then(([userInfo, movies, searchedMovies]) => {
 					setCurrentUser(userInfo.user);
 					setSavedMovies(movies);
+					setApiResult(searchedMovies);
+					const store = JSON.parse(localStorage.getItem('searchedMovies'));
+					if (store) {
+						setSearchedMovies(store);
+					}
 				})
 				.catch((err) => console.log(err));
 		}
@@ -57,12 +71,14 @@ function App() {
 	}
 
 	function handleLogin(email, password) {
+		setIsLoginSubmiting(true);
 		mainApi
 			.loginUser(email, password)
 			.then((data) => {
 				if (data) {
 					setIsLoggedIn(true);
 					setResOk(true);
+					setIsLoginSubmiting(false);
 					history.push('/');
 				}
 			})
@@ -74,11 +90,13 @@ function App() {
 	}
 
 	function handleRegister(name, email, password) {
+		setIsRegistrationSubmiting(true);
 		mainApi
 			.registerUser(name, email, password)
 			.then((res) => {
 				if (res) {
 					setResOk(true);
+					setIsRegistrationSubmiting(false);
 					handleLogin(email, password);
 				}
 			})
@@ -128,18 +146,24 @@ function App() {
 		if (shortMovies) {
 			setPrevSearchedMovies(searchedMovies);
 			setPrevSavedMovies(savedMovies);
-			setSearchedMovies((state) => {
-				return state.filter((c) => {
-					return c.duration < 40;
-				});
+			const filterResult = searchedMovies.filter((c) => {
+				return c.duration < 40;
 			});
+			setSearchedMovies(filterResult);
+			console.log(filterResult);
+			localStorage.setItem('searchedMovies', JSON.stringify(filterResult));
 			setSavedMovies((state) => {
 				return state.filter((c) => {
 					return c.duration < 40;
 				});
 			});
-		} else if (!shortMovies) {
+		} else if (!shortMovies && prevSearchedMovies.length > 0) {
 			setSearchedMovies(prevSearchedMovies);
+			console.log(prevSearchedMovies);
+			localStorage.setItem(
+				'searchedMovies',
+				JSON.stringify(prevSearchedMovies)
+			);
 			setSavedMovies(prevSavedMovies);
 		}
 	}, [shortMovies]);
@@ -185,12 +209,14 @@ function App() {
 	}
 
 	function handleUpdateUser(name, email) {
+		setisProfileSubmiting(true);
 		mainApi
 			.editProfile(name, email)
 			.then((userInfo) => {
 				setCurrentUser(userInfo.user);
 				setisInfoTooltipOpen(true);
 				setIsEditOk(true);
+				setisProfileSubmiting(false);
 			})
 			.catch((err) => {
 				setisInfoTooltipOpen(true);
@@ -200,43 +226,31 @@ function App() {
 
 	useEffect(() => {
 		if (isSubmitting && location.pathname === '/movies') {
-			moviesApi
-				.getMovies()
-				.then((movies) => {
-					const result = movies.filter(
-						(movie) =>
-							movie.nameRU?.toLowerCase().indexOf(searchValue.toLowerCase()) >
-								-1 ||
-							movie.description
-								?.toLowerCase()
-								.indexOf(searchValue.toLowerCase()) > -1 ||
-							movie.director?.toLowerCase().indexOf(searchValue.toLowerCase()) >
-								-1 ||
-							movie.nameEN?.toLowerCase().indexOf(searchValue.toLowerCase()) >
-								-1 ||
-							movie.country?.toLowerCase().indexOf(searchValue.toLowerCase()) >
-								-1
-					);
-					const mapResult = result.map((searchedMovie) => {
-						savedMovies.map((savedMovie) => {
-							if (savedMovie.movieId === searchedMovie.id) {
-								searchedMovie._id = savedMovie._id;
-								setIsSaved(true);
-								return searchedMovie;
-							}
-							return searchedMovie;
-						});
+			const result = apiResult.filter(
+				(movie) =>
+					movie.nameRU?.toLowerCase().indexOf(searchValue.toLowerCase()) > -1 ||
+					movie.description?.toLowerCase().indexOf(searchValue.toLowerCase()) >
+						-1 ||
+					movie.director?.toLowerCase().indexOf(searchValue.toLowerCase()) >
+						-1 ||
+					movie.nameEN?.toLowerCase().indexOf(searchValue.toLowerCase()) > -1 ||
+					movie.country?.toLowerCase().indexOf(searchValue.toLowerCase()) > -1
+			);
+			const mapResult = result.map((searchedMovie) => {
+				savedMovies.map((savedMovie) => {
+					if (savedMovie.movieId === searchedMovie.id) {
+						searchedMovie._id = savedMovie._id;
+						setIsSaved(true);
 						return searchedMovie;
-					});
-					setSearchedMovies(mapResult);
-					setIsSearchSucces(true);
-					setIsSubmitting(false);
-				})
-				.catch((err) => {
-					console.log(err);
-					setIsSubmitting(false);
-					setIsSearchSucces(false);
+					}
+					return searchedMovie;
 				});
+				return searchedMovie;
+			});
+			setSearchedMovies(mapResult);
+			localStorage.setItem('searchedMovies', JSON.stringify(mapResult));
+			setIsSearchSucces(true);
+			setIsSubmitting(false);
 		} else if (isSubmitting && location.pathname === '/saved-movies') {
 			mainApi
 				.getMovies()
@@ -269,12 +283,16 @@ function App() {
 
 	useEffect(() => {
 		screenWidth >= 991
-			? setCardQuantity(12)
+			? setCardQuantity(CARD_QUANTITY.wide)
 			: screenWidth < 991 && screenWidth >= 768
-			? setCardQuantity(8)
-			: setCardQuantity(5);
+			? setCardQuantity(CARD_QUANTITY.middle)
+			: setCardQuantity(CARD_QUANTITY.narrow);
 
-		screenWidth >= 991 ? setExtraCardQuantity(3) : setExtraCardQuantity(2);
+		screenWidth >= 1280
+			? setExtraCardQuantity(EXTRA_CARD_QUANTITY.wide)
+			: screenWidth < 1280 && screenWidth >= 991
+			? setExtraCardQuantity(EXTRA_CARD_QUANTITY.middle)
+			: setExtraCardQuantity(EXTRA_CARD_QUANTITY.narrow);
 	}, [screenWidth]);
 
 	function handleShowExtraCards() {
@@ -319,6 +337,7 @@ function App() {
 								buttonErrorText="Ошибка регистрации"
 								isResOk={isResOk}
 								location={location}
+								isRegistrationSubmiting={isRegistrationSubmiting}
 							/>
 						</Route>
 						<Route path="/signin" exact>
@@ -334,6 +353,7 @@ function App() {
 								isResOk={isResOk}
 								handleLogin={handleLogin}
 								location={location}
+								isLoginSubmiting={isLoginSubmiting}
 							/>
 						</Route>
 						<Route path={['/', '/saved-movies', '/movies', '/profile']} exact>
@@ -364,6 +384,7 @@ function App() {
 								isEditOk={isEditOk}
 								isOpen={isInfoTooltipOpen}
 								onClose={closeInfoTooltip}
+								isProfileSubmiting={isProfileSubmiting}
 							/>
 						</Route>
 						<Route path="/*">
