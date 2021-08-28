@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 
-function SearchForm() {
+function SearchForm({ useInput, handleSubmitSearch, handleCheckboxToggle }) {
 	const [isFocused, setIsFocused] = useState(false);
+
+	const searchValue = useInput('', { isEmpty: true });
+
+	function handleSubmit(e) {
+		handleSubmitSearch(e, searchValue.value);
+	}
 
 	function handleEnableFocus() {
 		setIsFocused(true);
@@ -17,16 +23,27 @@ function SearchForm() {
 				className={`search-form__container ${
 					isFocused ? 'search-form__container_focus' : ''
 				}`}
+				onSubmit={handleSubmit}
 			>
-				<fieldset className="search-form__field">
+				<fieldset
+					className="search-form__field"
+					onFocus={handleEnableFocus}
+					onBlur={handleDisableFocus}
+				>
 					<input
 						type="text"
 						className="search-form__text-input"
 						placeholder="Фильм"
 						required
-						onFocus={handleEnableFocus}
-						onBlur={handleDisableFocus}
+						onBlur={(e) => searchValue.onBlur(e)}
+						value={searchValue.value}
+						onChange={(e) => searchValue.onChange(e)}
 					/>
+					<span className="search-form__error">
+						{searchValue.isEmpty && searchValue.isDirty
+							? 'Нужно ввести ключевое слово'
+							: ''}
+					</span>
 				</fieldset>
 				<button
 					type="submit"
@@ -34,7 +51,11 @@ function SearchForm() {
 				></button>
 			</form>
 			<fieldset className="search-form__checkbox-container">
-				<input type="checkbox" className="search-form__checkbox" />
+				<input
+					type="checkbox"
+					className="search-form__checkbox"
+					onChange={handleCheckboxToggle}
+				/>
 				<article className="search-form__checkbox-sign">
 					Короткометражки
 				</article>

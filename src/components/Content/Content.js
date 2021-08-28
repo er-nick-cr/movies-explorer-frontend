@@ -5,6 +5,8 @@ import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import Footer from '../Footer/Footer';
 import Profile from '../Profile/Profile';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import InfoTooltip from '../InfoTooltip/InfoTooltip';
 
 function Content({
 	scroll,
@@ -17,6 +19,25 @@ function Content({
 	handleOpenMenu,
 	handleCloseMenu,
 	useInput,
+	setSearchValue,
+	isSubmitting,
+	handleSubmitSearch,
+	isSearchSucces,
+	cardQuantity,
+	handleShowExtraCards,
+	handleUpdateUser,
+	isMoviesSearched,
+	handleLogout,
+	isMovieSaved,
+	handleSaveMovie,
+	handleDeleteMovie,
+	isSaved,
+	shortMovies,
+	handleCheckboxToggle,
+	isEditOk,
+	isOpen,
+	onClose,
+	isProfileSubmiting,
 }) {
 	return (
 		<>
@@ -30,17 +51,64 @@ function Content({
 			/>
 			<Switch>
 				<Route path="/movies">
-					<Movies movies={movies} location={location} savedClass="" />
+					<ProtectedRoute
+						movies={movies}
+						imageUrl="https://api.nomoreparties.co"
+						location={location}
+						savedClass=""
+						useInput={useInput}
+						setSearchValue={setSearchValue}
+						isSubmitting={isSubmitting}
+						handleSubmitSearch={handleSubmitSearch}
+						isSearchSucces={isSearchSucces}
+						cardQuantity={cardQuantity}
+						handleShowExtraCards={handleShowExtraCards}
+						isMoviesSearched={isMoviesSearched}
+						component={Movies}
+						isLoggedIn={isLoggedIn}
+						isMovieSaved={isMovieSaved}
+						handleSaveMovie={handleSaveMovie}
+						handleDeleteMovie={handleDeleteMovie}
+						isSaved={isSaved}
+						shortMovies={shortMovies}
+						handleCheckboxToggle={handleCheckboxToggle}
+					/>
 				</Route>
 				<Route path="/saved-movies">
-					<Movies
+					<ProtectedRoute
 						movies={savedMovies}
+						imageUrl=""
 						location={location}
 						savedClass="card__button_saved"
+						useInput={useInput}
+						setSearchValue={setSearchValue}
+						isSubmitting={isSubmitting}
+						handleSubmitSearch={handleSubmitSearch}
+						isSearchSucces={isSearchSucces}
+						cardQuantity={100}
+						handleShowExtraCards={handleShowExtraCards}
+						isMoviesSearched={isMoviesSearched}
+						component={Movies}
+						isLoggedIn={isLoggedIn}
+						isMovieSaved={isMovieSaved}
+						handleSaveMovie={handleSaveMovie}
+						handleDeleteMovie={handleDeleteMovie}
+						isSaved={isSaved}
+						shortMovies={shortMovies}
+						handleCheckboxToggle={handleCheckboxToggle}
 					/>
 				</Route>
 				<Route path="/profile">
-					<Profile user={user} useInput={useInput} />
+					<ProtectedRoute
+						user={user}
+						useInput={useInput}
+						handleUpdateUser={handleUpdateUser}
+						handleLogout={handleLogout}
+						component={Profile}
+						isLoggedIn={isLoggedIn}
+						isProfileSubmiting={isProfileSubmiting}
+					/>
+					<InfoTooltip isEditOk={isEditOk} isOpen={isOpen} onClose={onClose} />
 				</Route>
 				<Route path="/">
 					<Main />

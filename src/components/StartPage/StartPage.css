@@ -30,6 +30,7 @@
 .start-page__form {
 	width: 100%;
 	margin: 40px 0 0 0;
+	position: relative;
 }
 
 .start-page__form-container {
@@ -81,6 +82,25 @@
 	line-height: 12px;
 	color: #8b8b8b;
 	margin-bottom: 5px;
+}
+
+.start-page__error {
+	width: auto;
+	color: #ee3465;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 12px;
+	align-self: center;
+	position: absolute;
+	bottom: 52px;
+	left: 50%;
+	transform: translateX(-50%);
+	display: none;
+}
+
+.start-page__error_active {
+	display: block;
 }
 
 .start-page__input {

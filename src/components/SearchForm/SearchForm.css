@@ -22,6 +22,7 @@
 	padding: 0;
 	width: calc(100% - 34px);
 	margin: 0;
+	position: relative;
 }
 
 .search-form__text-input {
@@ -38,6 +39,18 @@
 
 .search-form__text-input:focus {
 	outline: none;
+}
+
+.search-form__error {
+	position: absolute;
+	bottom: -35px;
+	right: 50%;
+	transform: translateX(50%);
+	color: #ee3465;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 12px;
 }
 
 .search-form__button {

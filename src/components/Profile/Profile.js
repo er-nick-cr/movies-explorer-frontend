@@ -1,27 +1,66 @@
 import React from 'react';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-function Profile({ useInput }) {
-	const nameValue = useInput('Никита', {
-		isEmpty: true,
-		minLength: 2,
-		maxLength: 30,
-	});
+function Profile({
+	useInput,
+	handleUpdateUser,
+	handleLogout,
+	isProfileSubmiting,
+}) {
+	const currentUser = React.useContext(CurrentUserContext);
 
-	const emailValue = useInput('nikita@yandex.ru', {
-		isEmpty: true,
-		isEmail: false,
-	});
+	const nameValue = useInput(
+		`${currentUser?.name === undefined ? '' : currentUser.name}`,
+		{
+			isEmpty: true,
+			minLength: 2,
+			maxLength: 30,
+		}
+	);
+
+	const emailValue = useInput(
+		`${currentUser?.email === undefined ? '' : currentUser.email}`,
+		{
+			isEmpty: true,
+			isEmail: false,
+		}
+	);
+
+	const isEqual =
+		currentUser?.name === nameValue.value &&
+		currentUser?.email === emailValue.value;
+
+	const isValid = nameValue.isValid && emailValue.isValid;
+
+	const isDisabled = isProfileSubmiting
+		? true
+		: isEqual
+		? true
+		: isValid
+		? false
+		: true;
+
+	function handleSubmit(e) {
+		e.preventDefault();
+		handleUpdateUser(nameValue.value, emailValue.value);
+	}
+
+	function handleSubmitLogout(e) {
+		e.preventDefault();
+		handleLogout();
+	}
 
 	return (
 		<section className="profile">
-			<form className="profile__form">
-				<h3 className="profile__heading">Привет, Никита</h3>
+			<form className="profile__form" onSubmit={handleSubmit}>
+				<h3 className="profile__heading">{`Привет, ${currentUser?.name}`}</h3>
 				<fieldset className="profile__fieldset">
 					<div className="profile__input-container">
 						<label className="profile__label">Имя</label>
 						<input
 							name="name"
 							type="text"
+							disabled={isProfileSubmiting}
 							className={`profile__input ${
 								(nameValue.isEmpty ||
 									nameValue.minLengthError ||
@@ -53,6 +92,7 @@ function Profile({ useInput }) {
 						<input
 							type="email"
 							name="email"
+							disabled={isProfileSubmiting}
 							className={`profile__input ${
 								(emailValue.isEmpty || emailValue.isEmailError) &&
 								emailValue.isDirty
@@ -79,16 +119,18 @@ function Profile({ useInput }) {
 				<button
 					type="submit"
 					className={`profile__submit-button overlay cursor ${
-						nameValue.isValid && emailValue.isValid
-							? ''
-							: 'profile__submit-button_disabled'
+						isDisabled ? 'profile__submit-button_disabled' : ''
 					}`}
-					disabled={!(nameValue.isValid && emailValue.isValid)}
+					disabled={isDisabled}
 				>
 					Редактировать
 				</button>
 			</form>
-			<button type="button" className="profile__logout-button overlay cursor">
+			<button
+				type="button"
+				onClick={handleSubmitLogout}
+				className="profile__logout-button overlay cursor"
+			>
 				Выйти из аккаунта
 			</button>
 		</section>
